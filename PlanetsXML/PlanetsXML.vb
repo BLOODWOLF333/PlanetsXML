@@ -25,7 +25,7 @@ Public Class PlanetsXML
 
     End Sub
 
-    Private Sub btnGen_Click(sender As Object, e As EventArgs) Handles btnWrite.Click
+    Private Sub btnGen_Click(sender As Object, e As EventArgs) Handles btnGen.Click
 
         Dim objectPlanets As New objPlanets
 

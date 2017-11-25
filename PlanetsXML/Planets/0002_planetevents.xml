@@ -408,8 +408,8 @@
 		</event>
 		<event>
 			<date>2822-01-01</date>
-			<nadirCharge>False</nadirCharge>
-			<zenithCharge>False</zenithCharge>
+			<nadirCharge>false</nadirCharge>
+			<zenithCharge>false</zenithCharge>
 			<hpg>X</hpg>
 			<socioIndustrial>F-F-F-F-F</socioIndustrial>
 		</event>
@@ -418,8 +418,8 @@
 		<id>Lone Star</id>
 		<event>
 			<date>2571-01-01</date>
-			<nadirCharge>True</nadirCharge>
-			<zenithCharge>True</zenithCharge>
+			<nadirCharge>true</nadirCharge>
+			<zenithCharge>true</zenithCharge>
             <socioIndustrial>A-A-A-A-A</socioIndustrial>
 		</event>
 		<event>
@@ -428,8 +428,8 @@
 		</event>
 		<event>
 			<date>2803-01-01</date>
-			<nadirCharge>False</nadirCharge>
-			<zenithCharge>False</zenithCharge>
+			<nadirCharge>false</nadirCharge>
+			<zenithCharge>false</zenithCharge>
 			<hpg>X</hpg>
 			<socioIndustrial>F-F-F-F-F</socioIndustrial>
 		</event>

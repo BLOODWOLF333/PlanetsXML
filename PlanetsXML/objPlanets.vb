@@ -29,27 +29,29 @@ Class objPlanets
         End While
         reader.Close()
 
-        Dim Eserial As New XmlSerializer(GetType(EPlanets))
-        Dim e As New EPlanets
+        Dim Eserial As New XmlSerializer(GetType(eventsPlanets))
+        Dim e As New eventsPlanets
 
         Dim Ereader As XmlReader = XmlReader.Create(My.Application.Info.DirectoryPath & "\Planets\0002_planetevents.xml")
         While Ereader.Read()
 
-            e = serial.Deserialize(Ereader)
+            e = Eserial.Deserialize(Ereader)
 
         End While
         Ereader.Close()
 
-        Dim Wsettings As XmlWriterSettings = New XmlWriterSettings()
-        Wsettings.Indent = True
-        Wsettings.IndentChars = (ControlChars.Tab)
-        Wsettings.ConformanceLevel = ConformanceLevel.Document
-        Wsettings.WriteEndDocumentOnClose = True
+        Dim Wsettings As XmlWriterSettings = New XmlWriterSettings With {
+        .Indent = True,
+        .IndentChars = (ControlChars.Tab),
+        .ConformanceLevel = ConformanceLevel.Document,
+        .WriteEndDocumentOnClose = True}
 
-        For Each planet In p.planet()
+        For Each planet In p.planetArray()
 
             'Somehow check if EPlanets has an <event> with an id() matching planet.name()
             'If so then move <event> tags into that object, else create a new <event><id>planet.name()</id></event>
+            Dim eventsObj As eventsPlanet() = Array.FindAll(Of eventsPlanet)(e.eventPlanetArray(), Function(eventArray) eventArray.id = planet.name)
+            Console.WriteLine(planet.name() & " has " & eventsObj.Count & " entries in planetevents.xml")
 
             'If planet already has lore
             If String.IsNullOrEmpty(planet.desc()) = False Then
@@ -373,9 +375,9 @@ Class objPlanets
             'Determine planet's moons / rings
             If planet.cName() = "spacestation" OrElse planet.cName() = "asteroidfield" Then
 
-            ElseIf planet.satellite() Is Nothing AndAlso planet.landMass() IsNot Nothing Then
+            ElseIf planet.satelliteArray() Is Nothing AndAlso planet.landMassArray() IsNot Nothing Then
 
-            ElseIf planet.satellite() Is Nothing AndAlso planet.faction() = "UND" Then
+            ElseIf planet.satelliteArray() Is Nothing AndAlso planet.faction() = "UND" Then
 
                 Dim s As Short = getMoons(planet)
                 If s < 0 Then
@@ -387,7 +389,7 @@ Class objPlanets
                 Console.WriteLine(planet.name() & " # of satellites= " & planet.satellites())
                 Console.WriteLine("satellite(s) wait until discovered")
 
-            ElseIf planet.satellite() Is Nothing Then
+            ElseIf planet.satelliteArray() Is Nothing Then
 
                 Dim s As Short = getMoons(planet)
                 If s < 0 Then
@@ -401,34 +403,34 @@ Class objPlanets
 
                     For i = 0 To (s - 1)
 
-                        ReDim Preserve planet.satellite(i + 1)
+                        ReDim Preserve planet.satelliteArray(i + 1)
                         Dim name As String = getMoonsName(planet)
-                        While planet.satellite().Contains(name) = True
+                        While planet.satelliteArray().Contains(name) = True
 
                             name = getMoonsName(planet)
 
                         End While
-                        planet.satellite(i) = name
-                        Console.WriteLine(planet.name() & " satellite= " & planet.satellite(i) & " generated")
+                        planet.satelliteArray(i) = name
+                        Console.WriteLine(planet.name() & " satellite= " & planet.satelliteArray(i) & " generated")
 
                     Next
 
                 ElseIf s > 0 AndAlso planet.rings() = True Then
 
-                    ReDim Preserve planet.satellite(1)
-                    planet.satellite(0) = "Ring System"
+                    ReDim Preserve planet.satelliteArray(1)
+                    planet.satelliteArray(0) = "Ring System"
 
                     For i = 1 To (s)
 
-                        ReDim Preserve planet.satellite(i + 1)
+                        ReDim Preserve planet.satelliteArray(i + 1)
                         Dim name As String = getMoonsName(planet)
-                        While planet.satellite().Contains(name) = True
+                        While planet.satelliteArray().Contains(name) = True
 
                             name = getMoonsName(planet)
 
                         End While
-                        planet.satellite(i) = name
-                        Console.WriteLine(planet.name() & " satellite= " & planet.satellite(i) & " generated")
+                        planet.satelliteArray(i) = name
+                        Console.WriteLine(planet.name() & " satellite= " & planet.satelliteArray(i) & " generated")
 
                     Next
 
@@ -444,22 +446,22 @@ Class objPlanets
 
             ElseIf planet.faction() = "UND" Then
                 Console.WriteLine("landMass waits until discovered")
-            ElseIf planet.landMass() Is Nothing Then
+            ElseIf planet.landMassArray() Is Nothing Then
 
                 Dim lm As Integer = getLM(planet)
                 If lm > 0 Then
 
                     For i = 0 To (lm - 1)
 
-                        ReDim Preserve planet.landMass(i + 1)
+                        ReDim Preserve planet.landMassArray(i + 1)
                         Dim name As String = getLMName(planet)
-                        While planet.landMass().Contains(name) = True
+                        While planet.landMassArray().Contains(name) = True
 
                             name = getLMName(planet)
 
                         End While
-                        planet.landMass(i) = name
-                        Console.WriteLine(planet.name() & " land mass= " & planet.landMass(i) & " generated")
+                        planet.landMassArray(i) = name
+                        Console.WriteLine(planet.name() & " land mass= " & planet.landMassArray(i) & " generated")
 
                     Next
 
@@ -750,7 +752,7 @@ Class objPlanets
 
         Next
 
-        Array.Sort(p.planet)
+        Array.Sort(p.planetArray)
         Dim writer As XmlWriter = XmlWriter.Create(My.Application.Info.DirectoryPath & "\Planets\planets.xml", Wsettings)
         serial.Serialize(writer, p)
         writer.Flush()
@@ -2946,19 +2948,19 @@ Class objPlanets
 
         Select Case r
 
-                Case 1 To 3
+            Case 1 To 3
 
-                    Return "occupied"
+                Return "occupied"
 
-                Case 4 To 6
+            Case 4 To 6
 
-                    Return "abandoned"
+                Return "abandoned"
 
-                Case Else
+            Case Else
 
-                    Return "error"
+                Return "error"
 
-            End Select
+        End Select
 
     End Function
 

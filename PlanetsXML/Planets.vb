@@ -7,7 +7,7 @@
 Partial Public Class Planets
 
     <XmlElement("planet")>
-    Public Property planet() As Planet()
+    Public Property planetArray() As Planet()
 
 End Class
 
@@ -78,7 +78,7 @@ Partial Public Class Planet
 
     Public Function ShouldSerializenc() As Boolean
 
-        Return Not (nc() Is Nothing)
+        Return Not (nc() Is Nothing OrElse nc() = False)
 
     End Function
 
@@ -87,7 +87,7 @@ Partial Public Class Planet
 
     Public Function ShouldSerializezc() As Boolean
 
-        Return Not (zc() Is Nothing)
+        Return Not (zc() Is Nothing OrElse zc() = False)
 
     End Function
     'Star inner rock zone edge in AU
@@ -198,7 +198,7 @@ Partial Public Class Planet
     End Function
 
     <XmlElement("dayLength")>
-    Public Property dayL() As Single?
+    Public Property dayL() As Short?
 
     Public Function ShouldSerializedayL() As Boolean
 
@@ -324,11 +324,11 @@ Partial Public Class Planet
     End Function
     'Array of satellite(s)
     <XmlElement("satellite")>
-    Public Property satellite() As String()
+    Public Property satelliteArray() As String()
 
     Public Function ShouldSerializesatellite() As Boolean
 
-        Return Not (satellite() Is Nothing)
+        Return Not (satelliteArray() Is Nothing)
 
     End Function
     'If planet has a ring system
@@ -336,11 +336,11 @@ Partial Public Class Planet
     Public Property rings() As Boolean
 
     <XmlElement("landMass")>
-    Public Property landMass() As String()
+    Public Property landMassArray() As String()
 
     Public Function ShouldSerializelandMass() As Boolean
 
-        Return Not (landMass() Is Nothing)
+        Return Not (landMassArray() Is Nothing)
 
     End Function
     'Planets number of human occupants
@@ -349,6 +349,12 @@ Partial Public Class Planet
     'Planet's population rating "no population"(-1) - "trillions"(12) 
     <XmlElement("pop")>
     Public Property pop() As Short?
+
+    Public Function ShouldSerializepop() As Boolean
+
+        Return Not (pop() Is Nothing)
+
+    End Function
     'Text description of planet's government
     <XmlElement("government")>
     Public Property government() As String
@@ -382,6 +388,12 @@ Partial Public Class Planet
     <XmlElement("socioIndustrial")>
     Public Property socioIndustrial() As String
 
+    Public Function ShouldSerializesocioIndustrial() As Boolean
+
+        Return Not (socioIndustrial() Is Nothing)
+
+    End Function
+
     <XmlElement("hpg")>
     Public Property hpg() As String
 
@@ -407,7 +419,40 @@ Partial Public Class Planet
     Public Property desc() As String
 
     <XmlElement("event")>
-    Public Property Pevent() As Pevent()
+    Public Property eventArray() As planetsEvent()
+
+    Public Shared Narrowing Operator CType(obj As Planet) As eventsPlanet
+
+        Return New eventsPlanet With {
+            .id = obj.name
+            }
+
+    End Operator
+
+    Public Shared Widening Operator CType(obj As Planet) As eventsEvent
+
+        Return New eventsEvent With {
+            .albedo = obj.albedo,
+            .atmosphere = obj.atmosphere,
+            .climate = obj.climate,
+            .dayL = obj.dayL,
+            .desc = obj.desc,
+            .greenhouse = obj.greenhouse,
+            .hpg = obj.hpg,
+            .icon = obj.icon,
+            .landMassArray = obj.landMassArray,
+            .lifeForm = obj.lifeForm,
+            .nc = obj.nc,
+            .percentWater = obj.percentWater,
+            .pop = obj.pop,
+            .pressure = obj.pressure,
+            .satelliteArray = obj.satelliteArray,
+            .socioIndustrial = obj.socioIndustrial,
+            .tilt = obj.tilt,
+            .temperature = obj.temperature,
+            .zc = obj.zc
+        }
+    End Operator
 
 End Class
 
@@ -415,12 +460,21 @@ End Class
  ComponentModel.DesignerCategory("event"),
  XmlType(AnonymousType:=True),
  XmlRoot("event", IsNullable:=False)>
-Partial Public Class Pevent
+Partial Public Class planetsEvent
 
     <XmlElement(DataType:="date")>
     Public Property [date]() As Date
 
     <XmlElement("faction")>
     Public Property faction() As String
+
+    Public Shared Widening Operator CType(obj As planetsEvent) As eventsEvent
+
+        Return New eventsEvent With {
+            .[date] = obj.[date],
+            .faction = obj.faction
+            }
+
+    End Operator
 
 End Class
