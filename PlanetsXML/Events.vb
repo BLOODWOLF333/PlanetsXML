@@ -7,7 +7,7 @@ XmlRoot("planets", IsNullable:=False)>
 Partial Public Class eventsPlanets
 
     <XmlElement("planet")>
-    Public Property eventPlanetArray() As eventsPlanet()
+    Public Property eventsPlanetArray() As eventsPlanet()
 
 End Class
 

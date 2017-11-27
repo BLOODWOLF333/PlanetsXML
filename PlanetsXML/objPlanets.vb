@@ -14,6 +14,9 @@ Class objPlanets
     Private rockT As DataTable = StarTable.rockTable()
     Private waterT As DataTable = StarTable.waterTable()
 
+    Private eraArray() As Date = {"2571-01-01", "2781-01-01", "2901-01-01", "3020-01-01", "3050-01-01", "3062-01-01", "3068-01-01", "3086-01-01",
+        "3101-01-01", "3131-01-01"}
+
     Private Shared ReadOnly r As New Random()
 
     Private Sub serialPlanets()
@@ -32,7 +35,7 @@ Class objPlanets
         Dim Eserial As New XmlSerializer(GetType(eventsPlanets))
         Dim e As New eventsPlanets
 
-        Dim Ereader As XmlReader = XmlReader.Create(My.Application.Info.DirectoryPath & "\Planets\0002_planetevents.xml")
+        Dim Ereader As XmlReader = XmlReader.Create(My.Application.Info.DirectoryPath & "\Planets\0002_planeteventsTemplate.xml")
         While Ereader.Read()
 
             e = Eserial.Deserialize(Ereader)
@@ -47,16 +50,101 @@ Class objPlanets
         .WriteEndDocumentOnClose = True}
 
         For Each planet In p.planetArray()
+            'Set factions for year 2005
+            If String.IsNullOrEmpty(planet.faction()) = True Then
 
-            'Somehow check if EPlanets has an <event> with an id() matching planet.name()
-            'If so then move <event> tags into that object, else create a new <event><id>planet.name()</id></event>
-            Dim eventsObj As eventsPlanet() = Array.FindAll(Of eventsPlanet)(e.eventPlanetArray(), Function(eventArray) eventArray.id = planet.name)
-            Console.WriteLine(planet.name() & " has " & eventsObj.Count & " entries in planetevents.xml")
+                planet.faction = "UND"
+                Console.WriteLine(planet.name() & " Faction @2005= " & planet.faction() & " generated")
 
+            ElseIf planet.name() <> "Terra" AndAlso planet.faction() = "NONE" Then
+                'For the non-canon fluff planets to connect the systems
+                planet.faction = "UND"
+                Console.WriteLine(planet.name() & " Faction @2005= " & planet.faction() & " generated")
+                planet.eventArray = {}
+                Console.WriteLine(planet.name() & " eventArray size= " & planet.eventArray.Length())
+                ReDim planet.eventArray(0)
+                Console.WriteLine(planet.name() & " new eventArray size= " & planet.eventArray.Length())
+                Dim newEvent As New planetEvent
+                newEvent.date = "2005-01-01"
+                newEvent.faction = "NONE"
+                planet.eventArray(0) = newEvent
+                Console.WriteLine(planet.name() & " new date= " & planet.eventArray(0).date())
+                Console.WriteLine(planet.name() & " new faction= " & planet.eventArray(0).faction())
+
+            Else
+                Console.WriteLine("Faction @2005= " & planet.faction())
+            End If
+
+            Dim indexEO = Array.FindIndex(Of eventsPlanet)(e.eventsPlanetArray(), Function(ep) String.Compare(ep.id, planet.name, True) = 0)
+            Console.WriteLine(planet.name() & " Index of eventsPlanets entry= " & indexEO)
+            Dim eventsObj As eventsPlanet
+
+            If indexEO = -1 Then
+
+                eventsObj = Nothing
+
+            Else
+
+                eventsObj = e.eventsPlanetArray(indexEO)
+
+            End If
+
+            If eventsObj Is Nothing Then
+                Console.WriteLine(planet.name() & " does not have an Events entry")
+                Console.WriteLine("Number of eventsPlanets= " & e.eventsPlanetArray.Length())
+                Dim l As Short = e.eventsPlanetArray.Length()
+                ReDim Preserve e.eventsPlanetArray(l)
+                Console.WriteLine("ReDim number of eventsPlanets= " & e.eventsPlanetArray.Length())
+                Dim newEO As New eventsPlanet
+                newEO.id = planet.name()
+                newEO.eventArray = {}
+                Console.WriteLine("New eventPlanet id= " & newEO.id())
+                For Each [event] In planet.eventArray
+
+                    Dim newEvent As New eventsEvent
+                    newEvent.date = [event].date()
+                    newEvent.faction = [event].faction()
+                    Dim i As Short = newEO.eventArray.Length()
+                    ReDim Preserve newEO.eventArray(i)
+                    Console.WriteLine("ReDim number of events in newEO event array= " & newEO.eventArray.Length())
+                    newEO.eventArray(i) = newEvent
+                    Console.WriteLine("New event date= " & newEO.eventArray(i).date())
+                    Console.WriteLine("New event faction= " & newEO.eventArray(i).faction())
+
+                Next
+                Array.Sort(newEO.eventArray)
+                e.eventsPlanetArray(l) = newEO
+                Array.Sort(e.eventsPlanetArray)
+                Array.Clear(planet.eventArray, 0, planet.eventArray.Length())
+
+            Else
+                Console.WriteLine(planet.name() & " does have an Events entry")
+                Console.WriteLine("Number of events in eventsObj= " & eventsObj.eventArray.Length())
+                For Each [event] In planet.eventArray
+
+                    Dim newEvent As New eventsEvent
+                    newEvent.date = [event].date()
+                    newEvent.faction = [event].faction()
+                    Dim l As Short = eventsObj.eventArray.Length()
+                    ReDim Preserve eventsObj.eventArray(l)
+                    Console.WriteLine("ReDim number of events in eventsObj= " & eventsObj.eventArray.Length())
+                    eventsObj.eventArray(l) = newEvent
+                    Console.WriteLine("New event date= " & eventsObj.eventArray(l).date())
+                    Console.WriteLine("New event faction= " & eventsObj.eventArray(l).faction())
+
+                Next
+                Array.Sort(eventsObj.eventArray)
+                Array.Clear(planet.eventArray, 0, planet.eventArray.Length())
+
+            End If
+
+            Dim eventsIndex As Short = Array.FindIndex(Of eventsPlanet)(e.eventsPlanetArray(), Function(ep) String.Compare(ep.id, planet.name, True) = 0)
             'If planet already has lore
             If String.IsNullOrEmpty(planet.desc()) = False Then
                 Console.WriteLine(planet.name() & " has lore")
                 planet.lore = True
+                e.eventsPlanetArray(eventsIndex).eventArray(0).desc = planet.desc()
+                planet.desc = Nothing
 
             Else
                 Console.WriteLine(planet.name() & " does not have lore")
@@ -77,6 +165,7 @@ Class objPlanets
 
                 planet.sClass = getSC()
                 Console.WriteLine(planet.name() & " star class= " & planet.sClass() & " generated")
+                planet.nonCanon = " "
 
             Else
                 Console.WriteLine(planet.name() & " star class= " & planet.sClass())
@@ -339,20 +428,6 @@ Class objPlanets
 
             Else
                 Console.WriteLine(planet.name() & " percent water= " & planet.percentWater())
-            End If
-            'Set factions for year 2005
-            If String.IsNullOrEmpty(planet.faction()) = True Then
-
-                planet.faction = "UND"
-                Console.WriteLine(planet.name() & " Faction= " & planet.faction() & " generated")
-
-            ElseIf planet.name() <> "Terra" AndAlso planet.faction() <> "UND" Then
-
-                planet.faction = "UND"
-                Console.WriteLine(planet.name() & " Faction= " & planet.faction() & " generated")
-
-            Else
-                Console.WriteLine("Faction= " & planet.faction())
             End If
             'Determine planet's highest life form
             If planet.cName() = "spacestation" OrElse planet.cName() = "asteroidfield" Then
@@ -2968,17 +3043,17 @@ Class objPlanets
 
         Dim d As Date
 
-        If planet.Pevent(0).date() Is Nothing Then
+        If planet.planetEvent(0).date() Is Nothing Then
 
             d = "2780-01-01"
 
         Else
 
-            d = planet.Pevent(0).date()
+            d = planet.planetEvent(0).date()
 
         End If
 
-        Dim f As String = planet.Pevent(0).faction()
+        Dim f As String = planet.planetEvent(0).faction()
         Dim clan As Boolean = checkCC(f)
         Dim x As Single = planet.x()
         Dim y As Single = planet.y()
@@ -3335,9 +3410,9 @@ Class objPlanets
     Private Function getTech(planet) As Integer
 
         Dim index As Integer = 0
-        For i = 0 To planet.Pevent().Length - 1
+        For i = 0 To planet.planetEvent().Length - 1
 
-            If planet.Pevent(i).date().Year <= 3025 Then
+            If planet.planetEvent(i).date().Year <= 3025 Then
 
                 index = i
 
@@ -3345,8 +3420,8 @@ Class objPlanets
 
         Next
 
-        Dim f As String = planet.Pevent(index).faction()
-        Dim d As Integer = planet.Pevent(0).date().Year
+        Dim f As String = planet.planetEvent(index).faction()
+        Dim d As Integer = planet.planetEvent(0).date().Year
         Dim p As Long = planet.population()
         Dim clan As Boolean = checkCC(f)
         Dim tech As Integer = 3
@@ -3597,7 +3672,7 @@ Class objPlanets
         Dim den As Double
         Dim p As Long = planet.population()
         Dim output As Integer = planet.output()
-        Dim d As Integer = planet.Pevent(0).date().year
+        Dim d As Integer = planet.planetEvent(0).date().year
         Dim material As Integer = 2
 
         If planet.density() Is Nothing Then

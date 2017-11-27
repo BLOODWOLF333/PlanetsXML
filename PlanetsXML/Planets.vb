@@ -411,6 +411,9 @@ Partial Public Class Planet
     'If the planet already has a description
     <XmlIgnore()>
     Public Property lore() As Boolean
+    'To store all non-canon notes for the description
+    <XmlIgnore()>
+    Public Property nonCanon() As String
     'Special features & occupancy 
     <XmlIgnore()>
     Public Property SFO() As String
@@ -419,40 +422,7 @@ Partial Public Class Planet
     Public Property desc() As String
 
     <XmlElement("event")>
-    Public Property eventArray() As planetsEvent()
-
-    Public Shared Narrowing Operator CType(obj As Planet) As eventsPlanet
-
-        Return New eventsPlanet With {
-            .id = obj.name
-            }
-
-    End Operator
-
-    Public Shared Widening Operator CType(obj As Planet) As eventsEvent
-
-        Return New eventsEvent With {
-            .albedo = obj.albedo,
-            .atmosphere = obj.atmosphere,
-            .climate = obj.climate,
-            .dayL = obj.dayL,
-            .desc = obj.desc,
-            .greenhouse = obj.greenhouse,
-            .hpg = obj.hpg,
-            .icon = obj.icon,
-            .landMassArray = obj.landMassArray,
-            .lifeForm = obj.lifeForm,
-            .nc = obj.nc,
-            .percentWater = obj.percentWater,
-            .pop = obj.pop,
-            .pressure = obj.pressure,
-            .satelliteArray = obj.satelliteArray,
-            .socioIndustrial = obj.socioIndustrial,
-            .tilt = obj.tilt,
-            .temperature = obj.temperature,
-            .zc = obj.zc
-        }
-    End Operator
+    Public Property eventArray() As planetEvent()
 
 End Class
 
@@ -460,21 +430,12 @@ End Class
  ComponentModel.DesignerCategory("event"),
  XmlType(AnonymousType:=True),
  XmlRoot("event", IsNullable:=False)>
-Partial Public Class planetsEvent
+Partial Public Class planetEvent
 
     <XmlElement(DataType:="date")>
     Public Property [date]() As Date
 
     <XmlElement("faction")>
     Public Property faction() As String
-
-    Public Shared Widening Operator CType(obj As planetsEvent) As eventsEvent
-
-        Return New eventsEvent With {
-            .[date] = obj.[date],
-            .faction = obj.faction
-            }
-
-    End Operator
 
 End Class
