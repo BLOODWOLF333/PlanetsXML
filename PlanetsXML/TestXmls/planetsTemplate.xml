@@ -1,0 +1,45 @@
+<planets>
+    <planet>
+        <xcood>-123.764</xcood>
+        <ycood>272.182</ycood>
+        <id>A Place</id>
+        <name>A Place</name>
+        <spectralType>K1V</spectralType>
+        <spectralClass>K</spectralClass>
+        <subtype>1.0</subtype>
+        <luminosity>V</luminosity>
+        <nadirCharge>false</nadirCharge>
+        <zenithCharge>false</zenithCharge>
+        <socioIndustrial>C-C-A-C-D</socioIndustrial>
+        <faction>UND</faction>
+        <desc>Despite A Place's poor soil making agriculture nearly impossible the planet was settled to take advantage of its abundance of natural resources. For most of its history A Place has relied on its neighbor, Bountiful Harvest for food. Unfortunately, when there are disruptions in shipping, such as during the 1st Succession War, food shortages begin almost immediately. During the 1st Succession War the lack of food resulted in nearly 90% of the planet's million inhabitants starving.</desc>
+        <event>
+            <date>2235-01-01</date>
+            <faction>IND</faction>
+        </event>
+        <event>
+            <date>2571-01-01</date>
+            <faction>LA</faction>
+        </event>
+        <event>
+            <date>3040-01-19</date>
+            <faction>FC</faction>
+        </event>
+        <event>
+            <date>3057-12-01</date>
+            <faction>ARDC</faction>
+        </event>
+        <event>
+            <date>3067-04-24</date>
+            <faction>LA</faction>
+        </event>
+        <event>
+            <date>3130-01-01</date>
+            <faction>CJF,LA</faction>
+        </event>
+        <event>
+            <date>3135-01-01</date>
+            <faction>CJF</faction>
+        </event>
+    </planet>
+</planets>

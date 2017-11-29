@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<!-- This file consolidates all the planet events -->
+<planets>
+	<planet>
+		<id>A Place</id>
+		<event>date and SocioIndustrial noncanon
+			<date>2571-01-01</date>
+			<pop>6</pop>
+			<socioIndustrial>C-C-A-C-D</socioIndustrial>
+		</event>
+		<event>noncanon
+			<date>2692</date>
+			<hpg>b</hpg>
+		</event>
+		<event>date noncanon
+			<date>2806-01-01</date>
+			<message>Famine breaks out on A Place.</message>
+			<pop>4</pop>
+		</event>
+		<event>
+			<date>3132-08-07</date>
+			<hpg>X</hpg>
+		</event>
+	</planet>
+</planets>

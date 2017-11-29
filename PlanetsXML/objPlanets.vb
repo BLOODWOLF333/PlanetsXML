@@ -51,32 +51,32 @@ Class objPlanets
 
         For Each planet In p.planetArray()
             'Set factions for year 2005
-            If String.IsNullOrEmpty(planet.faction()) = True Then
+            If String.IsNullOrEmpty(planet.faction.inner()) = True Then
 
-                planet.faction = "UND"
-                Console.WriteLine(planet.name() & " Faction @2005= " & planet.faction() & " generated")
+                planet.faction.inner() = "UND"
+                Console.WriteLine(planet.name.inner() & " Faction @2005= " & planet.faction.inner() & " was empty")
 
-            ElseIf planet.name() <> "Terra" AndAlso planet.faction() = "NONE" Then
+            ElseIf planet.name.inner() <> "Terra" AndAlso planet.faction.inner() = "NONE" Then
                 'For the non-canon fluff planets to connect the systems
-                planet.faction = "UND"
-                Console.WriteLine(planet.name() & " Faction @2005= " & planet.faction() & " generated")
+                planet.faction.inner = "UND"
+                Console.WriteLine(planet.name.inner() & " Faction @2005= " & planet.faction.inner() & " was NONE")
                 planet.eventArray = {}
-                Console.WriteLine(planet.name() & " eventArray size= " & planet.eventArray.Length())
+                Console.WriteLine(planet.name.inner() & " eventArray size= " & planet.eventArray.Length())
                 ReDim planet.eventArray(0)
-                Console.WriteLine(planet.name() & " new eventArray size= " & planet.eventArray.Length())
+                Console.WriteLine(planet.name.inner() & " new eventArray size= " & planet.eventArray.Length())
                 Dim newEvent As New planetEvent
                 newEvent.date = "2005-01-01"
-                newEvent.faction = "NONE"
+                newEvent.faction.inner = "NONE"
                 planet.eventArray(0) = newEvent
-                Console.WriteLine(planet.name() & " new date= " & planet.eventArray(0).date())
-                Console.WriteLine(planet.name() & " new faction= " & planet.eventArray(0).faction())
+                Console.WriteLine(planet.name.inner() & " new date= " & planet.eventArray(0).date())
+                Console.WriteLine(planet.name.inner() & " new faction= " & planet.eventArray(0).faction.inner())
 
             Else
-                Console.WriteLine("Faction @2005= " & planet.faction())
+                Console.WriteLine("Faction @2005= " & planet.faction.inner() & " was defined")
             End If
 
-            Dim indexEO = Array.FindIndex(Of eventsPlanet)(e.eventsPlanetArray(), Function(ep) String.Compare(ep.id, planet.name, True) = 0)
-            Console.WriteLine(planet.name() & " Index of eventsPlanets entry= " & indexEO)
+            Dim indexEO = Array.FindIndex(Of eventsPlanet)(e.eventsPlanetArray(), Function(ep) String.Compare(ep.id(), planet.name.inner(), True) = 0)
+            Console.WriteLine(planet.name.inner() & " Index of eventsPlanets entry= " & indexEO)
             Dim eventsObj As eventsPlanet
 
             If indexEO = -1 Then
@@ -90,20 +90,20 @@ Class objPlanets
             End If
 
             If eventsObj Is Nothing Then
-                Console.WriteLine(planet.name() & " does not have an Events entry")
+                Console.WriteLine(planet.name.inner() & " does not have an Events entry")
                 Console.WriteLine("Number of eventsPlanets= " & e.eventsPlanetArray.Length())
                 Dim l As Short = e.eventsPlanetArray.Length()
                 ReDim Preserve e.eventsPlanetArray(l)
                 Console.WriteLine("ReDim number of eventsPlanets= " & e.eventsPlanetArray.Length())
                 Dim newEO As New eventsPlanet
-                newEO.id = planet.name()
+                newEO.id = planet.name.inner()
                 newEO.eventArray = {}
                 Console.WriteLine("New eventPlanet id= " & newEO.id())
                 For Each [event] In planet.eventArray
 
                     Dim newEvent As New eventsEvent
                     newEvent.date = [event].date()
-                    newEvent.faction = [event].faction()
+                    newEvent.faction = [event].faction.inner()
                     Dim i As Short = newEO.eventArray.Length()
                     ReDim Preserve newEO.eventArray(i)
                     Console.WriteLine("ReDim number of events in newEO event array= " & newEO.eventArray.Length())
@@ -118,13 +118,13 @@ Class objPlanets
                 Array.Clear(planet.eventArray, 0, planet.eventArray.Length())
 
             Else
-                Console.WriteLine(planet.name() & " does have an Events entry")
+                Console.WriteLine(planet.name.inner() & " does have an Events entry")
                 Console.WriteLine("Number of events in eventsObj= " & eventsObj.eventArray.Length())
                 For Each [event] In planet.eventArray
 
                     Dim newEvent As New eventsEvent
                     newEvent.date = [event].date()
-                    newEvent.faction = [event].faction()
+                    newEvent.faction = [event].faction.inner()
                     Dim l As Short = eventsObj.eventArray.Length()
                     ReDim Preserve eventsObj.eventArray(l)
                     Console.WriteLine("ReDim number of events in eventsObj= " & eventsObj.eventArray.Length())
@@ -138,68 +138,68 @@ Class objPlanets
 
             End If
 
-            Dim eventsIndex As Short = Array.FindIndex(Of eventsPlanet)(e.eventsPlanetArray(), Function(ep) String.Compare(ep.id, planet.name, True) = 0)
+            Dim eventsIndex As Short = Array.FindIndex(Of eventsPlanet)(e.eventsPlanetArray(), Function(ep) String.Compare(ep.id, planet.name.inner, True) = 0)
             'If planet already has lore
             If String.IsNullOrEmpty(planet.desc()) = False Then
-                Console.WriteLine(planet.name() & " has lore")
+                Console.WriteLine(planet.name.inner() & " has lore")
                 planet.lore = True
                 e.eventsPlanetArray(eventsIndex).eventArray(0).desc = planet.desc()
                 planet.desc = Nothing
 
             Else
-                Console.WriteLine(planet.name() & " does not have lore")
+                Console.WriteLine(planet.name.inner() & " does not have lore")
                 planet.lore = False
 
             End If
             'If class empty but type is not
-            If String.IsNullOrEmpty(planet.sClass()) = True AndAlso String.IsNullOrEmpty(planet.sType()) = False Then
+            If String.IsNullOrEmpty(planet.sClass.inner()) = True AndAlso String.IsNullOrEmpty(planet.sType.inner()) = False Then
 
-                planet.sClass = planet.sType().Substring(0, 1)
-                Console.WriteLine(planet.name() & " star class= " & planet.sClass() & " type was defined")
+                planet.sClass.inner = planet.sType.inner.Substring(0, 1)
+                Console.WriteLine(planet.name.inner() & " star class= " & planet.sClass.inner() & " type was defined")
 
             Else
 
             End If
             'If class and type are empty
-            If String.IsNullOrEmpty(planet.sClass()) = True AndAlso String.IsNullOrEmpty(planet.sType()) = True Then
+            If String.IsNullOrEmpty(planet.sClass.inner()) = True AndAlso String.IsNullOrEmpty(planet.sType.inner()) = True Then
 
-                planet.sClass = getSC()
-                Console.WriteLine(planet.name() & " star class= " & planet.sClass() & " generated")
+                planet.sClass.inner = getSC()
+                Console.WriteLine(planet.name.inner() & " star class= " & planet.sClass.inner() & " generated")
                 planet.nonCanon = " "
 
             Else
-                Console.WriteLine(planet.name() & " star class= " & planet.sClass())
+                Console.WriteLine(planet.name.inner() & " star class= " & planet.sClass.inner())
             End If
             'If subtype is empty but type is not
-            If (planet.subT() Is Nothing) AndAlso String.IsNullOrEmpty(planet.sType()) = False Then
+            If (planet.subT.inner() Is Nothing) AndAlso String.IsNullOrEmpty(planet.sType.inner()) = False Then
 
-                planet.subT = planet.sType().Substring(1, 1)
-                Console.WriteLine(planet.name() & " star subtype= " & planet.subT() & " type was defined")
+                planet.subT.inner = planet.sType.inner().Substring(1, 1)
+                Console.WriteLine(planet.name.inner() & " star subtype= " & planet.subT.inner() & " type was defined")
 
             Else
 
             End If
             'If subtype and type are empty
-            If (planet.subT() Is Nothing) AndAlso String.IsNullOrEmpty(planet.sType()) = True Then
+            If (planet.subT.inner() Is Nothing) AndAlso String.IsNullOrEmpty(planet.sType.inner()) = True Then
 
-                planet.subT = getST()
-                Console.WriteLine(planet.name() & " star subtype= " & planet.subT() & " generated")
+                planet.subT.inner = getST()
+                Console.WriteLine(planet.name.inner() & " star subtype= " & planet.subT.inner() & " generated")
 
             Else
-                Console.WriteLine(planet.name() & " star subtype= " & planet.subT())
+                Console.WriteLine(planet.name.inner() & " star subtype= " & planet.subT.inner())
             End If
             'If luminosity is empty but type is not
-            If String.IsNullOrEmpty(planet.luminosity()) = True AndAlso String.IsNullOrEmpty(planet.sType()) = False Then
-                Console.WriteLine(planet.name() & " star type digits= " & planet.sType.Length)
-                If planet.sType.Length = 4 Then
+            If String.IsNullOrEmpty(planet.luminosity.inner()) = True AndAlso String.IsNullOrEmpty(planet.sType.inner()) = False Then
+                Console.WriteLine(planet.name.inner() & " star type digits= " & planet.sType.inner.Length)
+                If planet.sType.inner.Length = 4 Then
 
-                    planet.luminosity = planet.sType().Substring(2, 2)
-                    Console.WriteLine(planet.name() & " star luminosity= " & planet.luminosity() & " type was defined")
+                    planet.luminosity.inner = planet.sType.inner().Substring(2, 2)
+                    Console.WriteLine(planet.name.inner() & " star luminosity= " & planet.luminosity.inner() & " type was defined")
 
                 Else
 
-                    planet.luminosity = planet.sType().Substring(2, 1)
-                    Console.WriteLine(planet.name() & " star luminosity= " & planet.luminosity() & " type was defined")
+                    planet.luminosity.inner = planet.sType.inner().Substring(2, 1)
+                    Console.WriteLine(planet.name.inner() & " star luminosity= " & planet.luminosity.inner() & " type was defined")
 
                 End If
 
@@ -207,252 +207,252 @@ Class objPlanets
 
             End If
             'If luminosity and type are empty
-            If String.IsNullOrEmpty(planet.luminosity()) = True AndAlso String.IsNullOrEmpty(planet.sType()) = True Then
+            If String.IsNullOrEmpty(planet.luminosity.inner()) = True AndAlso String.IsNullOrEmpty(planet.sType.inner()) = True Then
 
-                planet.luminosity = getL(planet)
-                Console.WriteLine(planet.name() & " star luminosity= " & planet.luminosity() & " generated")
+                planet.luminosity.inner = getL(planet)
+                Console.WriteLine(planet.name.inner() & " star luminosity= " & planet.luminosity.inner() & " generated")
 
             Else
-                Console.WriteLine(planet.name() & " star luminosity= " & planet.luminosity())
+                Console.WriteLine(planet.name.inner() & " star luminosity= " & planet.luminosity.inner())
             End If
             'If type is empty
-            If String.IsNullOrEmpty(planet.sType()) = True Then
+            If String.IsNullOrEmpty(planet.sType.inner()) = True Then
 
-                planet.sType = planet.sClass() & CShort(planet.subT()) & planet.luminosity()
-                Console.WriteLine(planet.name() & " star type= " & planet.sType() & " generated")
+                planet.sType.inner = planet.sClass.inner() & CShort(planet.subT.inner()) & planet.luminosity.inner()
+                Console.WriteLine(planet.name.inner() & " star type= " & planet.sType.inner() & " generated")
 
             Else
-                Console.WriteLine(planet.name() & " star type= " & planet.sType())
+                Console.WriteLine(planet.name.inner() & " star type= " & planet.sType.inner())
             End If
             'Populate the star's mass, lum, and habitability data
             Try
 
-                planet.habitability = getHabit(planet)
+                planet.habitability.inner = getHabit(planet)
                 planet.mass = getStarM(planet)
                 planet.lum = getStarL(planet)
-                Console.WriteLine(planet.name() & " habitability= " & planet.habitability())
-                Console.WriteLine(planet.name() & " star mass= " & planet.mass())
-                Console.WriteLine(planet.name() & " star lum= " & planet.lum())
+                Console.WriteLine(planet.name.inner() & " habitability= " & planet.habitability.inner())
+                Console.WriteLine(planet.name.inner() & " star mass= " & planet.mass())
+                Console.WriteLine(planet.name.inner() & " star lum= " & planet.lum())
 
             Catch ex As Exception
 
-                Console.WriteLine(planet.name() & " has an impossible star " & planet.sType())
-                planet.luminosity = getL(planet)
-                planet.sType = planet.sClass() & CShort(planet.subT()) & planet.luminosity()
-                planet.habitability = getHabit(planet)
+                Console.WriteLine(planet.name.inner() & " has an impossible star " & planet.sType.inner())
+                planet.luminosity.inner = getL(planet)
+                planet.sType.inner = planet.sClass.inner() & CShort(planet.subT.inner()) & planet.luminosity.inner()
+                planet.habitability.inner = getHabit(planet)
                 planet.mass = getStarM(planet)
                 planet.lum = getStarL(planet)
-                Console.WriteLine(planet.name() & " new star= " & planet.sType())
-                Console.WriteLine(planet.name() & " habitability= " & planet.habitability())
-                Console.WriteLine(planet.name() & " star mass= " & planet.mass())
-                Console.WriteLine(planet.name() & " star lum= " & planet.lum())
+                Console.WriteLine(planet.name.inner() & " new star= " & planet.sType.inner())
+                Console.WriteLine(planet.name.inner() & " habitability= " & planet.habitability.inner())
+                Console.WriteLine(planet.name.inner() & " star mass= " & planet.mass())
+                Console.WriteLine(planet.name.inner() & " star lum= " & planet.lum())
 
             End Try
             'If planet is an uninhabitable type then move to next planet
-            If planet.faction() = "NONE" Then
+            If planet.faction.inner() = "NONE" Then
 
                 Continue For
 
             End If
             'Determine system position
-            If planet.sysPos() Is Nothing Then
+            If planet.sysPos.inner() Is Nothing Then
 
-                planet.sysPos = getSP(planet)
-                Console.WriteLine(planet.name() & " SysPos= " & planet.sysPos() & " generated")
+                planet.sysPos.inner = getSP(planet)
+                Console.WriteLine(planet.name.inner() & " SysPos= " & planet.sysPos.inner() & " generated")
 
-            ElseIf planet.sysPos() IsNot Nothing AndAlso planet.temperature() Is Nothing Then
+            ElseIf planet.sysPos.inner() IsNot Nothing AndAlso planet.temperature.inner() Is Nothing Then
 
-                planet.sysPos = getSP(planet)
-                Console.WriteLine(planet.name() & " SysPos= " & planet.sysPos() & " generated to find AU from star")
+                planet.sysPos.inner = getSP(planet)
+                Console.WriteLine(planet.name.inner() & " SysPos= " & planet.sysPos.inner() & " generated to find AU from star")
 
             Else
-                Console.WriteLine(planet.name() & " SysPos= " & planet.sysPos())
+                Console.WriteLine(planet.name.inner() & " SysPos= " & planet.sysPos.inner())
             End If
             'Determine orbit eccentricity
-            If planet.orbitE() Is Nothing Then
+            If planet.orbitE.inner() Is Nothing Then
 
-                planet.orbitE = getOrbitE()
-                Console.WriteLine(planet.name() & " Orbit Eccentricity= " & planet.orbitE() & " generated")
+                planet.orbitE.inner = getOrbitE()
+                Console.WriteLine(planet.name.inner() & " Orbit Eccentricity= " & planet.orbitE.inner() & " generated")
 
             Else
 
             End If
             'Determine orbit inclination
-            If planet.orbitI() Is Nothing Then
+            If planet.orbitI.inner() Is Nothing Then
 
-                planet.orbitI = getOrbitI()
-                Console.WriteLine(planet.name() & " Orbit Inclination= " & planet.orbitI() & " generated")
+                planet.orbitI.inner = getOrbitI()
+                Console.WriteLine(planet.name.inner() & " Orbit Inclination= " & planet.orbitI.inner() & " generated")
 
             Else
 
             End If
             'Determine if axis tilt is enough to cause seasons
-            If planet.cName() = "spacestation" OrElse planet.cName() = "asteroidfield" Then
+            If planet.cName.inner() = "spacestation" OrElse planet.cName.inner() = "asteroidfield" Then
 
-            ElseIf planet.tilt() Is Nothing Then
+            ElseIf planet.tilt.inner() Is Nothing Then
 
-                planet.tilt = getTilt()
-                Console.WriteLine(planet.name() & " Tilt= " & planet.tilt() & " generated")
+                planet.tilt.inner = getTilt()
+                Console.WriteLine(planet.name.inner() & " Tilt= " & planet.tilt.inner() & " generated")
 
             Else
 
             End If
             'Determine planet's diam, mass, escapeV, and gravity
-            If planet.name() = "Terra" Then
+            If planet.name.inner() = "Terra" Then
 
-                planet.radius = Rstd / Rstd
-                planet.Pmass = Mstd / Mstd
-                planet.volume = (4 / 3) * Math.PI * ((planet.radius() * Rstd) ^ 3) * (10 ^ 6) 'cm3
-                planet.density = Dstd 'g/cm3
+                planet.radius.inner = Rstd / Rstd
+                planet.Pmass.inner = Mstd / Mstd
+                planet.volume = (4 / 3) * Math.PI * ((planet.radius.inner() * Rstd) ^ 3) * (10 ^ 6) 'cm3
+                planet.density.inner = Dstd 'g/cm3
                 planet.escapeV = EVstd 'm/s
-                planet.gravity = Gstd / Gstd
+                planet.gravity.inner = Gstd / Gstd
 
-            ElseIf planet.cName() = "spacestation" Then
+            ElseIf planet.cName.inner() = "spacestation" Then
 
-            ElseIf planet.gravity() Is Nothing Then
+            ElseIf planet.gravity.inner() Is Nothing Then
 
-                planet.radius = getRadius() / Rstd
-                Console.WriteLine(planet.name() & " Planet Radius= " & planet.radius() & " of standard generated")
-                planet.Pmass = getMass() / Mstd
-                Console.WriteLine(planet.name() & " Planet Mass= " & planet.Pmass() & " of standard generated")
-                planet.volume = (4 / 3) * Math.PI * ((planet.radius() * Rstd) ^ 3) * (10 ^ 6) 'cm3
-                Console.WriteLine(planet.name() & " Volume= " & planet.volume() & "cm3 generated")
-                planet.density = (planet.Pmass() * Mstd * (10 ^ 3)) / planet.volume() 'g/cm3
-                Console.WriteLine(planet.name() & " Density= " & planet.density() & "g/cm3 generated")
+                planet.radius.inner = getRadius() / Rstd
+                Console.WriteLine(planet.name.inner() & " Planet Radius= " & planet.radius.inner() & " of standard generated")
+                planet.Pmass.inner = getMass() / Mstd
+                Console.WriteLine(planet.name.inner() & " Planet Mass= " & planet.Pmass.inner() & " of standard generated")
+                planet.volume = (4 / 3) * Math.PI * ((planet.radius.inner() * Rstd) ^ 3) * (10 ^ 6) 'cm3
+                Console.WriteLine(planet.name.inner() & " Volume= " & planet.volume() & "cm3 generated")
+                planet.density.inner = (planet.Pmass.inner() * Mstd * (10 ^ 3)) / planet.volume() 'g/cm3
+                Console.WriteLine(planet.name.inner() & " Density= " & planet.density.inner() & "g/cm3 generated")
                 planet.escapeV = getEscapeV(planet)
-                Console.WriteLine(planet.name() & " escapeV= " & planet.escapeV() & "m/s generated")
-                planet.gravity = getGravity(planet)
-                Console.WriteLine(planet.name() & " Gravity= " & planet.gravity() & " generated")
+                Console.WriteLine(planet.name.inner() & " escapeV= " & planet.escapeV() & "m/s generated")
+                planet.gravity.inner = getGravity(planet)
+                Console.WriteLine(planet.name.inner() & " Gravity= " & planet.gravity.inner() & " generated")
 
-            ElseIf planet.gravity() IsNot Nothing Then
+            ElseIf planet.gravity.inner() IsNot Nothing Then
 
-                planet.Pmass = getMass() / Mstd
-                Console.WriteLine(planet.name() & " Planet Mass= " & planet.Pmass() & " of standard generated")
-                planet.radius = Math.Sqrt((G * planet.Pmass * Mstd) / (planet.gravity * Gstd))
-                Console.WriteLine(planet.name() & " Planet Radius= " & planet.radius() & " of standard generated")
-                planet.volume = (4 / 3) * Math.PI * ((planet.radius() * Rstd) ^ 3) * (10 ^ 6) 'cm
-                Console.WriteLine(planet.name() & " Volume= " & planet.volume() & "cm3 generated")
-                planet.density = (planet.Pmass() * Mstd * (10 ^ 3)) / planet.volume() 'g/cm3
-                Console.WriteLine(planet.name() & " Density= " & planet.density() & "g/cm3 generated")
+                planet.Pmass.inner = getMass() / Mstd
+                Console.WriteLine(planet.name.inner() & " Planet Mass= " & planet.Pmass.inner() & " of standard generated")
+                planet.radius.inner = Math.Sqrt((G * planet.Pmass.inner * Mstd) / (planet.gravity.inner * Gstd))
+                Console.WriteLine(planet.name.inner() & " Planet Radius= " & planet.radius.inner() & " of standard generated")
+                planet.volume = (4 / 3) * Math.PI * ((planet.radius.inner() * Rstd) ^ 3) * (10 ^ 6) 'cm
+                Console.WriteLine(planet.name.inner() & " Volume= " & planet.volume() & "cm3 generated")
+                planet.density.inner = (planet.Pmass.inner() * Mstd * (10 ^ 3)) / planet.volume() 'g/cm3
+                Console.WriteLine(planet.name.inner() & " Density= " & planet.density.inner() & "g/cm3 generated")
                 planet.escapeV = getEscapeV(planet)
-                Console.WriteLine(planet.name() & " escapeV= " & planet.escapeV() & "m/s generated")
-                Console.WriteLine(planet.name() & " Gravity= " & planet.gravity())
+                Console.WriteLine(planet.name.inner() & " escapeV= " & planet.escapeV() & "m/s generated")
+                Console.WriteLine(planet.name.inner() & " Gravity= " & planet.gravity.inner())
 
             Else
 
             End If
             'Determine a planet's day length in hours
-            If planet.cName = "spacestation" OrElse planet.cName = "asteroidfield" Then
+            If planet.cName.inner = "spacestation" OrElse planet.cName.inner = "asteroidfield" Then
 
-            ElseIf planet.dayL() Is Nothing Then
+            ElseIf planet.dayL.inner() Is Nothing Then
 
-                planet.dayL = getDayL()
-                Console.WriteLine(planet.name() & " day length= " & planet.dayL())
+                planet.dayL.inner = getDayL()
+                Console.WriteLine(planet.name.inner() & " day length= " & planet.dayL.inner())
             Else
 
             End If
             'Determine a planet's pressure
-            If planet.cName() = "spacestation" Then
+            If planet.cName.inner() = "spacestation" Then
 
-            ElseIf planet.cName() = "asteroidfield" Then
+            ElseIf planet.cName.inner() = "asteroidfield" Then
 
-                planet.pressure = 0
-                Console.WriteLine(planet.name() & " Atmosphere Category= " & planet.pressure() & " generated")
+                planet.pressure.inner = 0
+                Console.WriteLine(planet.name.inner() & " Atmosphere Category= " & planet.pressure.inner() & " generated")
 
-            ElseIf planet.pressure() Is Nothing AndAlso planet.lore() = False Then
+            ElseIf planet.pressure.inner() Is Nothing AndAlso planet.lore() = False Then
 
-                planet.pressure = getPressure(planet)
-                Console.WriteLine(planet.name() & " Atmosphere Category= " & planet.pressure() & " generated")
+                planet.pressure.inner = getPressure(planet)
+                Console.WriteLine(planet.name.inner() & " Atmosphere Category= " & planet.pressure.inner() & " generated")
 
-            ElseIf planet.pressure() Is Nothing AndAlso planet.lore() = True Then
+            ElseIf planet.pressure.inner() Is Nothing AndAlso planet.lore() = True Then
 
-                planet.pressure = 3
-                Console.WriteLine(planet.name() & " Atmosphere Category= " & planet.pressure() & " generated")
+                planet.pressure.inner = 3
+                Console.WriteLine(planet.name.inner() & " Atmosphere Category= " & planet.pressure.inner() & " generated")
             Else
-                Console.WriteLine(planet.name() & " Atmosphere Category= " & planet.pressure())
+                Console.WriteLine(planet.name.inner() & " Atmosphere Category= " & planet.pressure.inner())
             End If
             'Determine planet's atmospheric composition
-            If planet.lore() = False AndAlso planet.pressure() >= 2 Then
+            If planet.lore() = False AndAlso planet.pressure.inner() >= 2 Then
 
-                planet.atmosphere = getAtmosphere()
-                Console.WriteLine(planet.name() & " " & planet.atmosphere() & " generated")
-            ElseIf planet.lore() = False AndAlso planet.pressure() < 2 Then
+                planet.atmosphere.inner = getAtmosphere()
+                Console.WriteLine(planet.name.inner() & " " & planet.atmosphere.inner() & " generated")
+            ElseIf planet.lore() = False AndAlso planet.pressure.inner() < 2 Then
 
-                planet.atmosphere = ""
-                Console.WriteLine(planet.name() & " " & planet.atmosphere() & "no atmosphere generated")
+                planet.atmosphere.inner = ""
+                Console.WriteLine(planet.name.inner() & " " & planet.atmosphere.inner() & "no atmosphere generated")
 
-            ElseIf planet.lore() = True AndAlso planet.pressure() >= 2 Then
+            ElseIf planet.lore() = True AndAlso planet.pressure.inner() >= 2 Then
 
-                planet.atmosphere = "Breathable"
-                Console.WriteLine(planet.name() & " " & planet.atmosphere() & " generated")
-            ElseIf planet.lore() = True AndAlso planet.pressure() < 2 Then
+                planet.atmosphere.inner = "Breathable"
+                Console.WriteLine(planet.name.inner() & " " & planet.atmosphere.inner() & " generated")
+            ElseIf planet.lore() = True AndAlso planet.pressure.inner() < 2 Then
 
-                planet.atmosphere = ""
-                Console.WriteLine(planet.name() & " " & planet.atmosphere() & "no atmosphere generated")
+                planet.atmosphere.inner = ""
+                Console.WriteLine(planet.name.inner() & " " & planet.atmosphere.inner() & "no atmosphere generated")
             Else
 
             End If
             'Determine planet's temp from system position and atmospheric conditions
-            If planet.cName() = "spacestation" Then
+            If planet.cName.inner() = "spacestation" Then
 
-            ElseIf planet.temperature() Is Nothing Then
+            ElseIf planet.temperature.inner() Is Nothing Then
 
-                planet.temperature = getTemp(planet)
-                Console.WriteLine(planet.name() & " Temp= " & planet.temperature() & " generated")
+                planet.temperature.inner = getTemp(planet)
+                Console.WriteLine(planet.name.inner() & " Temp= " & planet.temperature.inner() & " generated")
 
             Else
-                Console.WriteLine(planet.name() & " Temp= " & planet.temperature())
+                Console.WriteLine(planet.name.inner() & " Temp= " & planet.temperature.inner())
             End If
             'Determine planet's climate off temperature
-            If planet.cName() = "spacestation" OrElse planet.cName() = "asteroidfield" Then
+            If planet.cName.inner() = "spacestation" OrElse planet.cName.inner() = "asteroidfield" Then
 
-            ElseIf String.IsNullOrEmpty(planet.climate()) = True Then
+            ElseIf String.IsNullOrEmpty(planet.climate.inner()) = True Then
 
-                planet.climate = getClimate(planet)
-                Console.WriteLine(planet.name() & " climate= " & planet.climate() & " generated")
+                planet.climate.inner = getClimate(planet)
+                Console.WriteLine(planet.name.inner() & " climate= " & planet.climate.inner() & " generated")
 
             Else
-                Console.WriteLine(planet.name() & " climate= " & planet.climate())
+                Console.WriteLine(planet.name.inner() & " climate= " & planet.climate.inner())
             End If
             'Determine planet's percent water coverage
-            If planet.cName() = "spacestation" Then
+            If planet.cName.inner() = "spacestation" Then
 
-            ElseIf planet.percentWater() Is Nothing AndAlso planet.pressure() >= 2 Then
+            ElseIf planet.percentWater.inner() Is Nothing AndAlso planet.pressure.inner() >= 2 Then
 
-                planet.percentWater = getPW(planet)
-                Console.WriteLine(planet.name() & " percent water= " & planet.percentWater() & " generated")
+                planet.percentWater.inner = getPW(planet)
+                Console.WriteLine(planet.name.inner() & " percent water= " & planet.percentWater.inner() & " generated")
 
-            ElseIf planet.percentWater() Is Nothing AndAlso planet.pressure() < 2 Then
-                planet.percentWater = 0
-                Console.WriteLine(planet.name() & " percent water= " & planet.percentWater() & " generated")
+            ElseIf planet.percentWater.inner() Is Nothing AndAlso planet.pressure.inner() < 2 Then
+                planet.percentWater.inner = 0
+                Console.WriteLine(planet.name.inner() & " percent water= " & planet.percentWater.inner() & " generated")
 
             Else
-                Console.WriteLine(planet.name() & " percent water= " & planet.percentWater())
+                Console.WriteLine(planet.name.inner() & " percent water= " & planet.percentWater.inner())
             End If
             'Determine planet's highest life form
-            If planet.cName() = "spacestation" OrElse planet.cName() = "asteroidfield" Then
+            If planet.cName.inner() = "spacestation" OrElse planet.cName.inner() = "asteroidfield" Then
 
-            ElseIf planet.faction = "UND" Then
+            ElseIf planet.faction.inner = "UND" Then
                 Console.WriteLine("life form waits until discovered")
-            ElseIf planet.lifeForm() Is Nothing AndAlso planet.pressure() >= 2 Then
+            ElseIf planet.lifeForm.inner() Is Nothing AndAlso planet.pressure.inner() >= 2 Then
 
-                planet.lifeForm = getLF(planet)
-                Console.WriteLine(planet.name() & " life form= " & planet.lifeForm() & " generated")
+                planet.lifeForm.inner = getLF(planet)
+                Console.WriteLine(planet.name.inner() & " life form= " & planet.lifeForm.inner() & " generated")
 
-            ElseIf planet.lifeForm() Is Nothing AndAlso planet.pressure() < 2 Then
+            ElseIf planet.lifeForm.inner() Is Nothing AndAlso planet.pressure.inner() < 2 Then
 
-                planet.lifeForm = 0
-                Console.WriteLine(planet.name() & " life form= " & planet.lifeForm() & " generated")
+                planet.lifeForm.inner = 0
+                Console.WriteLine(planet.name.inner() & " life form= " & planet.lifeForm.inner() & " generated")
 
             Else
-                Console.WriteLine(planet.name() & " life form= " & planet.lifeForm())
+                Console.WriteLine(planet.name.inner() & " life form= " & planet.lifeForm.inner())
             End If
             'Determine planet's moons / rings
-            If planet.cName() = "spacestation" OrElse planet.cName() = "asteroidfield" Then
+            If planet.cName.inner() = "spacestation" OrElse planet.cName.inner() = "asteroidfield" Then
 
-            ElseIf planet.satelliteArray() Is Nothing AndAlso planet.landMassArray() IsNot Nothing Then
+            ElseIf planet.satelliteArray.inner() Is Nothing AndAlso planet.landMassArray.inner() IsNot Nothing Then
 
-            ElseIf planet.satelliteArray() Is Nothing AndAlso planet.faction() = "UND" Then
+            ElseIf planet.satelliteArray.inner() Is Nothing AndAlso planet.faction.inner() = "UND" Then
 
                 Dim s As Short = getMoons(planet)
                 If s < 0 Then
@@ -460,11 +460,11 @@ Class objPlanets
                     s = 0
 
                 End If
-                planet.satellites = s
-                Console.WriteLine(planet.name() & " # of satellites= " & planet.satellites())
+                planet.satellites.inner = s
+                Console.WriteLine(planet.name.inner() & " # of satellites= " & planet.satellites.inner())
                 Console.WriteLine("satellite(s) wait until discovered")
 
-            ElseIf planet.satelliteArray() Is Nothing Then
+            ElseIf planet.satelliteArray.inner() Is Nothing Then
 
                 Dim s As Short = getMoons(planet)
                 If s < 0 Then
@@ -472,40 +472,40 @@ Class objPlanets
                     s = 0
 
                 End If
-                planet.satellites = s
-                Console.WriteLine(planet.name() & " # of satellites= " & planet.satellites())
+                planet.satellites.inner = s
+                Console.WriteLine(planet.name.inner() & " # of satellites= " & planet.satellites.inner())
                 If s > 0 AndAlso planet.rings() = False Then
 
                     For i = 0 To (s - 1)
 
-                        ReDim Preserve planet.satelliteArray(i + 1)
+                        ReDim Preserve planet.satelliteArray.inner(i + 1)
                         Dim name As String = getMoonsName(planet)
-                        While planet.satelliteArray().Contains(name) = True
+                        While planet.satelliteArray.inner.Contains(name) = True
 
                             name = getMoonsName(planet)
 
                         End While
-                        planet.satelliteArray(i) = name
-                        Console.WriteLine(planet.name() & " satellite= " & planet.satelliteArray(i) & " generated")
+                        planet.satelliteArray.inner(i) = name
+                        Console.WriteLine(planet.name.inner() & " satellite= " & planet.satelliteArray.inner(i) & " generated")
 
                     Next
 
                 ElseIf s > 0 AndAlso planet.rings() = True Then
 
-                    ReDim Preserve planet.satelliteArray(1)
-                    planet.satelliteArray(0) = "Ring System"
+                    ReDim Preserve planet.satelliteArray.inner(1)
+                    planet.satelliteArray.inner(0) = "Ring System"
 
                     For i = 1 To (s)
 
-                        ReDim Preserve planet.satelliteArray(i + 1)
+                        ReDim Preserve planet.satelliteArray.inner(i + 1)
                         Dim name As String = getMoonsName(planet)
-                        While planet.satelliteArray().Contains(name) = True
+                        While planet.satelliteArray.inner().Contains(name) = True
 
                             name = getMoonsName(planet)
 
                         End While
-                        planet.satelliteArray(i) = name
-                        Console.WriteLine(planet.name() & " satellite= " & planet.satelliteArray(i) & " generated")
+                        planet.satelliteArray.inner(i) = name
+                        Console.WriteLine(planet.name.inner() & " satellite= " & planet.satelliteArray.inner(i) & " generated")
 
                     Next
 
@@ -514,110 +514,110 @@ Class objPlanets
                 End If
 
             Else
-                Console.WriteLine(planet.name() & " satellite(s) already defined")
+                Console.WriteLine(planet.name.inner() & " satellite(s) already defined")
             End If
             'Determine planet's land masses
-            If planet.cName() = "spacestation" OrElse planet.cName() = "asteroidfield" Then
+            If planet.cName.inner() = "spacestation" OrElse planet.cName.inner() = "asteroidfield" Then
 
-            ElseIf planet.faction() = "UND" Then
+            ElseIf planet.faction.inner() = "UND" Then
                 Console.WriteLine("landMass waits until discovered")
-            ElseIf planet.landMassArray() Is Nothing Then
+            ElseIf planet.landMassArray.inner() Is Nothing Then
 
                 Dim lm As Integer = getLM(planet)
                 If lm > 0 Then
 
                     For i = 0 To (lm - 1)
 
-                        ReDim Preserve planet.landMassArray(i + 1)
+                        ReDim Preserve planet.landMassArray.inner(i + 1)
                         Dim name As String = getLMName(planet)
-                        While planet.landMassArray().Contains(name) = True
+                        While planet.landMassArray.inner().Contains(name) = True
 
                             name = getLMName(planet)
 
                         End While
-                        planet.landMassArray(i) = name
-                        Console.WriteLine(planet.name() & " land mass= " & planet.landMassArray(i) & " generated")
+                        planet.landMassArray.inner(i) = name
+                        Console.WriteLine(planet.name.inner() & " land mass= " & planet.landMassArray.inner(i) & " generated")
 
                     Next
 
                 End If
 
             Else
-                Console.WriteLine(planet.name() & " land mass(es) already defined")
+                Console.WriteLine(planet.name.inner() & " land mass(es) already defined")
             End If
             'Determine a planet's population
-            If planet.faction() = "UND" Then
+            If planet.faction.inner() = "UND" Then
 
                 planet.population = 0
                 Console.WriteLine("population waits until discovered")
             Else
 
                 planet.population = getPop(planet)
-                Console.WriteLine(planet.name() & " initial population= " & String.Format("{0:n0}", planet.population()) & " generated")
+                Console.WriteLine(planet.name.inner() & " initial population= " & String.Format("{0:n0}", planet.population()) & " generated")
                 planet.population = getPopMod(planet)
-                Console.WriteLine(planet.name() & " modified population= " & String.Format("{0:n0}", planet.population()) & " generated")
+                Console.WriteLine(planet.name.inner() & " modified population= " & String.Format("{0:n0}", planet.population()) & " generated")
 
             End If
             'Determine a planet's USILR scores and codes
-            If planet.faction = "UND" Then
+            If planet.faction.inner = "UND" Then
                 Console.WriteLine("USILR waits until discovered")
-            ElseIf String.IsNullOrEmpty(planet.socioIndustrial()) = True Then
+            ElseIf String.IsNullOrEmpty(planet.socioIndustrial.inner()) = True Then
 
                 planet.tech = getTech(planet)
-                Console.WriteLine(planet.name() & " tech score= " & planet.tech() & " generated")
+                Console.WriteLine(planet.name.inner() & " tech score= " & planet.tech() & " generated")
                 planet.development = getDev(planet)
-                Console.WriteLine(planet.name() & " development score= " & planet.development() & " generated")
+                Console.WriteLine(planet.name.inner() & " development score= " & planet.development() & " generated")
                 planet.output = getOutput(planet)
-                Console.WriteLine(planet.name() & " output score= " & planet.output() & " generated")
+                Console.WriteLine(planet.name.inner() & " output score= " & planet.output() & " generated")
                 planet.material = getMaterial(planet)
-                Console.WriteLine(planet.name() & " material score= " & planet.material() & " generated")
+                Console.WriteLine(planet.name.inner() & " material score= " & planet.material() & " generated")
                 planet.agricultural = getAgricultural(planet)
-                Console.WriteLine(planet.name() & " agricultural score= " & planet.agricultural() & " generated")
-                planet.socioIndustrial = getUSILR(planet.tech()) & "-" & getUSILR(planet.development()) & "-" & getUSILR(planet.material()) & "-" _
+                Console.WriteLine(planet.name.inner() & " agricultural score= " & planet.agricultural() & " generated")
+                planet.socioIndustrial.inner = getUSILR(planet.tech()) & "-" & getUSILR(planet.development()) & "-" & getUSILR(planet.material()) & "-" _
                     & getUSILR(planet.output()) & "-" & getUSILR(planet.agricultural())
-                Console.WriteLine(planet.name() & " USILR= " & planet.socioIndustrial() & " generated")
+                Console.WriteLine(planet.name.inner() & " USILR= " & planet.socioIndustrial.inner() & " generated")
 
-            ElseIf String.IsNullOrEmpty(planet.socioIndustrial()) = False Then
+            ElseIf String.IsNullOrEmpty(planet.socioIndustrial.inner()) = False Then
 
-                Dim tcode As String = planet.socioIndustrial().Substring(0, 1)
+                Dim tcode As String = planet.socioIndustrial.inner().Substring(0, 1)
                 Dim tscore As Short = getScore(tcode)
-                Dim dcode As String = planet.socioIndustrial().Substring(2, 1)
+                Dim dcode As String = planet.socioIndustrial.inner().Substring(2, 1)
                 Dim dscore As Short = getScore(dcode)
-                Dim ocode As String = planet.socioIndustrial().Substring(4, 1)
+                Dim ocode As String = planet.socioIndustrial.inner().Substring(4, 1)
                 Dim oscore As Short = getScore(ocode)
-                Dim mcode As String = planet.socioIndustrial().Substring(6, 1)
+                Dim mcode As String = planet.socioIndustrial.inner().Substring(6, 1)
                 Dim mscore As Short = getScore(mcode)
-                Dim acode As String = planet.socioIndustrial().Substring(8, 1)
+                Dim acode As String = planet.socioIndustrial.inner().Substring(8, 1)
                 Dim ascore As Short = getScore(acode)
                 planet.tech = tscore
-                Console.WriteLine(planet.name() & " tech score= " & planet.tech() & " generated")
+                Console.WriteLine(planet.name.inner() & " tech score= " & planet.tech() & " generated")
                 planet.development = dscore
-                Console.WriteLine(planet.name() & " development score= " & planet.development() & " generated")
+                Console.WriteLine(planet.name.inner() & " development score= " & planet.development() & " generated")
                 planet.output = oscore
-                Console.WriteLine(planet.name() & " output score= " & planet.output() & " generated")
+                Console.WriteLine(planet.name.inner() & " output score= " & planet.output() & " generated")
                 planet.material = mscore
-                Console.WriteLine(planet.name() & " material score= " & planet.material() & " generated")
+                Console.WriteLine(planet.name.inner() & " material score= " & planet.material() & " generated")
                 planet.agricultural = ascore
-                Console.WriteLine(planet.name() & " agricultural score= " & planet.agricultural() & " generated")
-                Console.WriteLine(planet.name() & " USILR= " & planet.socioIndustrial())
+                Console.WriteLine(planet.name.inner() & " agricultural score= " & planet.agricultural() & " generated")
+                Console.WriteLine(planet.name.inner() & " USILR= " & planet.socioIndustrial.inner())
 
             End If
             'Determine a planet's special features & occupancy
-            If planet.cName() = "spacestation" Then
+            If planet.cName.inner() = "spacestation" Then
 
-            ElseIf planet.faction() = "UND" Then
+            ElseIf planet.faction.inner() = "UND" Then
                 Console.WriteLine("features & occupancy wait until discovered")
             ElseIf planet.lore() = True Then
 
             Else
 
-                Dim a As String = planet.atmosphere()
+                Dim a As String = planet.atmosphere.inner()
                 Dim sf As String = getSF(planet)
                 planet.SFO = sf
-                Console.WriteLine(planet.name() & planet.SFO() & " generated")
+                Console.WriteLine(planet.name.inner() & planet.SFO() & " generated")
                 If sf = " experiences intense volcanic activity" AndAlso a = " has a breathable atmosphere" Then
-                    planet.atmosphere = " has a tainted atmosphere"
-                    Console.WriteLine(planet.name() & " volcanic activity changes atmosphere to tainted")
+                    planet.atmosphere.inner = " has a tainted atmosphere"
+                    Console.WriteLine(planet.name.inner() & " volcanic activity changes atmosphere to tainted")
 
                 Else
 
@@ -625,17 +625,17 @@ Class objPlanets
 
             End If
             'Populate planet's description
-            If planet.faction = "UND" Then
+            If planet.faction.inner = "UND" Then
 
                 Console.WriteLine("Description waits until discovered")
 
-            ElseIf String.Compare(planet.name(), "Terra", True) = 0 Then
+            ElseIf String.Compare(planet.name.inner(), "Terra", True) = 0 Then
 
-                Dim di As Decimal = planet.radius()
+                Dim di As Decimal = planet.radius.inner()
                 Dim sdi As Decimal = 1.2756 * (10 ^ 7)
                 Dim v As Decimal = planet.volume()
                 Dim sv As Decimal = 1.08678 * (10 ^ 27)
-                Dim dn As Decimal = planet.density()
+                Dim dn As Decimal = planet.density.inner()
                 Dim sdn As Decimal = 5.502487061
                 Dim ev As Decimal = planet.escapeV()
                 Dim ax As String = " has seasons due to an axial tilt"
@@ -650,12 +650,12 @@ Class objPlanets
                 Dim ad As String = getAdesc(planet)
                 Dim de As String = planet.desc()
 
-                planet.desc = planet.name() & " has a diameter of " & String.Format("{0:n0}", (di / 1000)) & "km(" & String.Format("{0:n2}", di / sdi) & " of standard), has a density of " & String.Format("{0:n3}", dn) & "g/cm3(" & String.Format("{0:n2}", dn / sdn) & " of standard), and has an escape velocity of " & String.Format("{0:n3}", (ev / 1000)) & "km/s" & "." _
-                    & Environment.NewLine & Environment.NewLine & planet.name() & ax & "," & ob & "," & ac & ", and has a population of " & String.Format("{0:n0}", po) & "." _
-                    & Environment.NewLine & Environment.NewLine & planet.name() & td & " world," & dd & "," & md & "," & od & ", and" & ad & " world." _
+                planet.desc = planet.name.inner() & " has a diameter of " & String.Format("{0:n0}", (di / 1000)) & "km(" & String.Format("{0:n2}", di / sdi) & " of standard), has a density of " & String.Format("{0:n3}", dn) & "g/cm3(" & String.Format("{0:n2}", dn / sdn) & " of standard), and has an escape velocity of " & String.Format("{0:n3}", (ev / 1000)) & "km/s" & "." _
+                    & Environment.NewLine & Environment.NewLine & planet.name.inner() & ax & "," & ob & "," & ac & ", and has a population of " & String.Format("{0:n0}", po) & "." _
+                    & Environment.NewLine & Environment.NewLine & planet.name.inner() & td & " world," & dd & "," & md & "," & od & ", and" & ad & " world." _
                     & Environment.NewLine & Environment.NewLine & de
 
-            ElseIf planet.cName() = "spacestation" AndAlso planet.lore() = False Then
+            ElseIf planet.cName.inner() = "spacestation" AndAlso planet.lore() = False Then
 
                 Dim po As Long = planet.population()
                 Dim td As String = getTdesc(planet)
@@ -663,9 +663,9 @@ Class objPlanets
                 Dim md As String = getMdesc(planet)
                 Dim od As String = getOdesc(planet)
 
-                planet.desc = planet.name() & " has a population of " & String.Format("{0:n0}", po) & "," & td & " space station," & dd & "," & md & ", and" & od & ".(Non-Canon)"
+                planet.desc = planet.name.inner() & " has a population of " & String.Format("{0:n0}", po) & "," & td & " space station," & dd & "," & md & ", and" & od & ".(Non-Canon)"
 
-            ElseIf planet.cName() = "spacestation" AndAlso planet.lore() = True Then
+            ElseIf planet.cName.inner() = "spacestation" AndAlso planet.lore() = True Then
 
                 Dim po As Long = planet.population()
                 Dim td As String = getTdesc(planet)
@@ -674,10 +674,10 @@ Class objPlanets
                 Dim od As String = getOdesc(planet)
                 Dim de As String = planet.desc()
 
-                planet.desc = planet.name() & " has a population of " & String.Format("{0:n0}", po) & "," & td & " space station," & dd & "," & md & ", and" & od & ".(Non-Canon)" _
+                planet.desc = planet.name.inner() & " has a population of " & String.Format("{0:n0}", po) & "," & td & " space station," & dd & "," & md & ", and" & od & ".(Non-Canon)" _
                     & Environment.NewLine & Environment.NewLine & de
 
-            ElseIf planet.cName() = "asteroidfield" AndAlso String.IsNullOrEmpty(planet.SFO()) = True AndAlso planet.lore() = False Then
+            ElseIf planet.cName.inner() = "asteroidfield" AndAlso String.IsNullOrEmpty(planet.SFO()) = True AndAlso planet.lore() = False Then
 
                 Dim po As Long = planet.population()
                 Dim td As String = getTdesc(planet)
@@ -685,9 +685,9 @@ Class objPlanets
                 Dim md As String = getMdesc(planet)
                 Dim od As String = getOdesc(planet)
 
-                planet.desc = planet.name() & " has a population of " & String.Format("{0:n0}", po) & "," & td & " asteroid field," & dd & "," & md & ", and" & od & ".(Non-Canon)"
+                planet.desc = planet.name.inner() & " has a population of " & String.Format("{0:n0}", po) & "," & td & " asteroid field," & dd & "," & md & ", and" & od & ".(Non-Canon)"
 
-            ElseIf planet.cName() = "asteroidfield" AndAlso String.IsNullOrEmpty(planet.SFO()) = True AndAlso planet.lore() = True Then
+            ElseIf planet.cName.inner() = "asteroidfield" AndAlso String.IsNullOrEmpty(planet.SFO()) = True AndAlso planet.lore() = True Then
 
                 Dim po As Long = planet.population()
                 Dim td As String = getTdesc(planet)
@@ -696,10 +696,10 @@ Class objPlanets
                 Dim od As String = getOdesc(planet)
                 Dim de As String = planet.desc()
 
-                planet.desc = planet.name() & " has a population of " & String.Format("{0:n0}", po) & "," & td & " asteroid field," & dd & "," & md & ", and" & od & ".(Non-Canon)" _
+                planet.desc = planet.name.inner() & " has a population of " & String.Format("{0:n0}", po) & "," & td & " asteroid field," & dd & "," & md & ", and" & od & ".(Non-Canon)" _
                         & Environment.NewLine & Environment.NewLine & de
 
-            ElseIf planet.cName() = "asteroidfield" AndAlso String.IsNullOrEmpty(planet.SFO()) = False AndAlso planet.lore() = False Then
+            ElseIf planet.cName.inner() = "asteroidfield" AndAlso String.IsNullOrEmpty(planet.SFO()) = False AndAlso planet.lore() = False Then
 
                 Dim sf As String = planet.SFO()
                 Dim po As Long = planet.population()
@@ -708,9 +708,9 @@ Class objPlanets
                 Dim md As String = getMdesc(planet)
                 Dim od As String = getOdesc(planet)
 
-                planet.desc = planet.name() & " has a population of " & String.Format("{0:n0}", po) & "," & sf & "," & td & " asteroid field," & dd & "," & md & ", and" & od & ".(Non-Canon)"
+                planet.desc = planet.name.inner() & " has a population of " & String.Format("{0:n0}", po) & "," & sf & "," & td & " asteroid field," & dd & "," & md & ", and" & od & ".(Non-Canon)"
 
-            ElseIf planet.cName() = "asteroidfield" AndAlso String.IsNullOrEmpty(planet.SFO()) = False AndAlso planet.lore() = True Then
+            ElseIf planet.cName.inner() = "asteroidfield" AndAlso String.IsNullOrEmpty(planet.SFO()) = False AndAlso planet.lore() = True Then
 
                 Dim sf As String = planet.SFO()
                 Dim po As Long = planet.population()
@@ -720,21 +720,21 @@ Class objPlanets
                 Dim od As String = getOdesc(planet)
                 Dim de As String = planet.desc()
 
-                planet.desc = planet.name() & " has a population of " & String.Format("{0:n0}", po) & "," & sf & "," & td & " asteroid field," & dd & "," & md & ", and" & od & ".(Non-Canon)" _
+                planet.desc = planet.name.inner() & " has a population of " & String.Format("{0:n0}", po) & "," & sf & "," & td & " asteroid field," & dd & "," & md & ", and" & od & ".(Non-Canon)" _
                     & Environment.NewLine & Environment.NewLine & de
 
             ElseIf String.IsNullOrEmpty(planet.SFO()) = True AndAlso planet.lore() = False Then
 
-                Dim di As Decimal = planet.radius()
+                Dim di As Decimal = planet.radius.inner()
                 Dim sdi As Decimal = 1.2756 * (10 ^ 7)
                 Dim v As Decimal = planet.volume()
                 Dim sv As Decimal = 1.08678 * (10 ^ 27)
-                Dim dn As Decimal = planet.density()
+                Dim dn As Decimal = planet.density.inner()
                 Dim sdn As Decimal = 5.502487061
                 Dim ev As Decimal = planet.escapeV()
-                Dim ax As String = planet.tilt()
-                Dim ob As String = planet.orbitE()
-                Dim ac As String = planet.atmosphere()
+                Dim ax As String = planet.tilt.inner()
+                Dim ob As String = planet.orbitE.inner()
+                Dim ac As String = planet.atmosphere.inner()
                 Dim po As Long = planet.population()
                 Dim td As String = getTdesc(planet)
                 Dim dd As String = getDdesc(planet)
@@ -742,22 +742,22 @@ Class objPlanets
                 Dim od As String = getOdesc(planet)
                 Dim ad As String = getAdesc(planet)
 
-                planet.desc = planet.name() & " has a diameter of " & String.Format("{0:n0}", (di / 1000)) & "km(" & String.Format("{0:n2}", di / sdi) & " of standard), has a density of " & String.Format("{0:n3}", dn) & "g/cm3(" & String.Format("{0:n2}", dn / sdn) & " of standard), and has an escape velocity of " & String.Format("{0:n3}", (ev / 1000)) & "km/s" & ".(Non-Canon)" _
-                    & Environment.NewLine & Environment.NewLine & planet.name() & ax & "," & ob & "," & ac & ", and has a population of " & String.Format("{0:n0}", po) & ".(Non-Canon)" _
-                    & Environment.NewLine & Environment.NewLine & planet.name() & td & " world," & dd & "," & md & "," & od & ", and" & ad & " world.(Non-Canon)"
+                planet.desc = planet.name.inner() & " has a diameter of " & String.Format("{0:n0}", (di / 1000)) & "km(" & String.Format("{0:n2}", di / sdi) & " of standard), has a density of " & String.Format("{0:n3}", dn) & "g/cm3(" & String.Format("{0:n2}", dn / sdn) & " of standard), and has an escape velocity of " & String.Format("{0:n3}", (ev / 1000)) & "km/s" & ".(Non-Canon)" _
+                    & Environment.NewLine & Environment.NewLine & planet.name.inner() & ax & "," & ob & "," & ac & ", and has a population of " & String.Format("{0:n0}", po) & ".(Non-Canon)" _
+                    & Environment.NewLine & Environment.NewLine & planet.name.inner() & td & " world," & dd & "," & md & "," & od & ", and" & ad & " world.(Non-Canon)"
 
             ElseIf String.IsNullOrEmpty(planet.SFO()) = True AndAlso planet.lore() = True Then
 
-                Dim di As Decimal = planet.radius()
+                Dim di As Decimal = planet.radius.inner()
                 Dim sdi As Decimal = 1.2756 * (10 ^ 7)
                 Dim v As Decimal = planet.volume()
                 Dim sv As Decimal = 1.08678 * (10 ^ 27)
-                Dim dn As Decimal = planet.density()
+                Dim dn As Decimal = planet.density.inner()
                 Dim sdn As Decimal = 5.502487061
                 Dim ev As Decimal = planet.escapeV()
-                Dim ax As String = planet.tilt()
-                Dim ob As String = planet.orbitE()
-                Dim ac As String = planet.atmosphere()
+                Dim ax As String = planet.tilt.inner()
+                Dim ob As String = planet.orbitE.inner()
+                Dim ac As String = planet.atmosphere.inner()
                 Dim po As Long = planet.population()
                 Dim td As String = getTdesc(planet)
                 Dim dd As String = getDdesc(planet)
@@ -766,23 +766,23 @@ Class objPlanets
                 Dim ad As String = getAdesc(planet)
                 Dim de As String = planet.desc()
 
-                planet.desc = planet.name() & " has a diameter of " & String.Format("{0:n0}", (di / 1000)) & "km(" & String.Format("{0:n2}", di / sdi) & " of standard), has a density of " & String.Format("{0:n3}", dn) & "g/cm3(" & String.Format("{0:n2}", dn / sdn) & " of standard), and has an escape velocity of " & String.Format("{0:n3}", (ev / 1000)) & "km/s" & ".(Non-Canon)" _
-                    & Environment.NewLine & Environment.NewLine & planet.name() & ax & "," & ob & "," & ac & ", and has a population of " & String.Format("{0:n0}", po) & ".(Non-Canon)" _
-                    & Environment.NewLine & Environment.NewLine & planet.name() & td & " world," & dd & "," & md & "," & od & ", and" & ad & " world.(Non-Canon)" _
+                planet.desc = planet.name.inner() & " has a diameter of " & String.Format("{0:n0}", (di / 1000)) & "km(" & String.Format("{0:n2}", di / sdi) & " of standard), has a density of " & String.Format("{0:n3}", dn) & "g/cm3(" & String.Format("{0:n2}", dn / sdn) & " of standard), and has an escape velocity of " & String.Format("{0:n3}", (ev / 1000)) & "km/s" & ".(Non-Canon)" _
+                    & Environment.NewLine & Environment.NewLine & planet.name.inner() & ax & "," & ob & "," & ac & ", and has a population of " & String.Format("{0:n0}", po) & ".(Non-Canon)" _
+                    & Environment.NewLine & Environment.NewLine & planet.name.inner() & td & " world," & dd & "," & md & "," & od & ", and" & ad & " world.(Non-Canon)" _
                     & Environment.NewLine & Environment.NewLine & de
 
             ElseIf String.IsNullOrEmpty(planet.SFO()) = False AndAlso planet.lore() = False Then
 
-                Dim di As Decimal = planet.radius()
+                Dim di As Decimal = planet.radius.inner()
                 Dim sdi As Decimal = 1.2756 * (10 ^ 7)
                 Dim v As Decimal = planet.volume()
                 Dim sv As Decimal = 1.08678 * (10 ^ 27)
-                Dim dn As Decimal = planet.density()
+                Dim dn As Decimal = planet.density.inner()
                 Dim sdn As Decimal = 5.502487061
                 Dim ev As Decimal = planet.escapeV()
-                Dim ax As String = planet.tilt()
-                Dim ob As String = planet.orbitE()
-                Dim ac As String = planet.atmosphere()
+                Dim ax As String = planet.tilt.inner()
+                Dim ob As String = planet.orbitE.inner()
+                Dim ac As String = planet.atmosphere.inner()
                 Dim sf As String = planet.SFO()
                 Dim td As String = getTdesc(planet)
                 Dim dd As String = getDdesc(planet)
@@ -791,22 +791,22 @@ Class objPlanets
                 Dim ad As String = getAdesc(planet)
                 Dim po As Long = planet.population()
 
-                planet.desc = planet.name() & " has a diameter of " & String.Format("{0:n0}", (di / 1000)) & "km(" & String.Format("{0:n2}", di / sdi) & " of standard), has a density of " & String.Format("{0:n3}", dn) & "g/cm3(" & String.Format("{0:n2}", dn / sdn) & " of standard), and has an escape velocity of " & String.Format("{0:n3}", (ev / 1000)) & "km/s" & ".(Non-Canon)" _
-                    & Environment.NewLine & Environment.NewLine & planet.name() & ax & "," & ob & "," & ac & "," & sf & ", and has a population of " & String.Format("{0:n0}", po) & ".(Non-Canon)" _
-                    & Environment.NewLine & Environment.NewLine & planet.name() & td & " world," & dd & "," & md & "," & od & ", and" & ad & " world.(Non-Canon)"
+                planet.desc = planet.name.inner() & " has a diameter of " & String.Format("{0:n0}", (di / 1000)) & "km(" & String.Format("{0:n2}", di / sdi) & " of standard), has a density of " & String.Format("{0:n3}", dn) & "g/cm3(" & String.Format("{0:n2}", dn / sdn) & " of standard), and has an escape velocity of " & String.Format("{0:n3}", (ev / 1000)) & "km/s" & ".(Non-Canon)" _
+                    & Environment.NewLine & Environment.NewLine & planet.name.inner() & ax & "," & ob & "," & ac & "," & sf & ", and has a population of " & String.Format("{0:n0}", po) & ".(Non-Canon)" _
+                    & Environment.NewLine & Environment.NewLine & planet.name.inner() & td & " world," & dd & "," & md & "," & od & ", and" & ad & " world.(Non-Canon)"
 
             Else
 
-                Dim di As Decimal = planet.radius()
+                Dim di As Decimal = planet.radius.inner()
                 Dim sdi As Decimal = 1.2756 * (10 ^ 7)
                 Dim v As Decimal = planet.volume()
                 Dim sv As Decimal = 1.08678 * (10 ^ 27)
-                Dim dn As Decimal = planet.density()
+                Dim dn As Decimal = planet.density.inner()
                 Dim sdn As Decimal = 5.502487061
                 Dim ev As Decimal = planet.escapeV()
-                Dim ax As String = planet.tilt()
-                Dim ob As String = planet.orbitE()
-                Dim ac As String = planet.atmosphere()
+                Dim ax As String = planet.tilt.inner()
+                Dim ob As String = planet.orbitE.inner()
+                Dim ac As String = planet.atmosphere.inner()
                 Dim sf As String = planet.SFO()
                 Dim po As Long = planet.population()
                 Dim td As String = getTdesc(planet)
@@ -816,9 +816,9 @@ Class objPlanets
                 Dim ad As String = getAdesc(planet)
                 Dim de As String = planet.desc()
 
-                planet.desc = planet.name() & " has a diameter of " & String.Format("{0:n0}", (di / 1000)) & "km(" & String.Format("{0:n2}", di / sdi) & " of standard), has a density of " & String.Format("{0:n3}", dn) & "g/cm3(" & String.Format("{0:n2}", dn / sdn) & " of standard), and has an escape velocity of " & String.Format("{0:n3}", (ev / 1000)) & "km/s" & ".(Non-Canon)" _
-                    & Environment.NewLine & Environment.NewLine & planet.name() & ax & "," & ob & "," & ac & "," & sf & ", and has a population of " & String.Format("{0:n0}", po) & ".(Non-Canon)" _
-                    & Environment.NewLine & Environment.NewLine & planet.name() & td & " world," & dd & "," & md & "," & od & ", and" & ad & " world.(Non-Canon)" _
+                planet.desc = planet.name.inner() & " has a diameter of " & String.Format("{0:n0}", (di / 1000)) & "km(" & String.Format("{0:n2}", di / sdi) & " of standard), has a density of " & String.Format("{0:n3}", dn) & "g/cm3(" & String.Format("{0:n2}", dn / sdn) & " of standard), and has an escape velocity of " & String.Format("{0:n3}", (ev / 1000)) & "km/s" & ".(Non-Canon)" _
+                    & Environment.NewLine & Environment.NewLine & planet.name.inner() & ax & "," & ob & "," & ac & "," & sf & ", and has a population of " & String.Format("{0:n0}", po) & ".(Non-Canon)" _
+                    & Environment.NewLine & Environment.NewLine & planet.name.inner() & td & " world," & dd & "," & md & "," & od & ", and" & ad & " world.(Non-Canon)" _
                     & Environment.NewLine & Environment.NewLine & de
 
             End If
@@ -964,13 +964,13 @@ Class objPlanets
 
         Dim r As Short = roll2D6()
 
-        If String.Compare(planet.sClass(), "M", True) = 0 AndAlso (r = 2 OrElse r = 4) Then
+        If String.Compare(planet.sClass.inner(), "M", True) = 0 AndAlso (r = 2 OrElse r = 4) Then
 
             While r = 2 OrElse r = 4
                 r = roll2D6()
             End While
 
-        ElseIf String.Compare(planet.sClass(), "K", True) = 0 AndAlso planet.subT() >= 4 AndAlso r = 4 Then
+        ElseIf String.Compare(planet.sClass.inner(), "K", True) = 0 AndAlso planet.subT.inner() >= 4 AndAlso r = 4 Then
 
             While r = 4
                 r = roll2D6()
@@ -1024,7 +1024,7 @@ Class objPlanets
 
     Private Function getHabit(planet) As Short
 
-        Dim expression As String = "[Spectral Type] = " & "'" & planet.sType() & "'"
+        Dim expression As String = "[Spectral Type] = " & "'" & planet.sType.inner() & "'"
         Dim selectRow As DataRow()
         selectRow = rockT.Select(expression)
         Dim h As Decimal = selectRow(0)(5)
@@ -1034,7 +1034,7 @@ Class objPlanets
 
     Private Function getStarM(planet) As Single
 
-        Dim expression As String = "[Spectral Type] = " & "'" & planet.sType() & "'"
+        Dim expression As String = "[Spectral Type] = " & "'" & planet.sType.inner() & "'"
         Dim selectRow As DataRow()
         selectRow = rockT.Select(expression)
         Dim m As Decimal = selectRow(0)(1)
@@ -1044,7 +1044,7 @@ Class objPlanets
 
     Private Function getStarL(planet) As Single
 
-        Dim expression As String = "[Spectral Type] = " & "'" & planet.sType() & "'"
+        Dim expression As String = "[Spectral Type] = " & "'" & planet.sType.inner() & "'"
         Dim selectRow As DataRow()
         selectRow = rockT.Select(expression)
         Dim l As Single = selectRow(0)(2)
@@ -1054,7 +1054,7 @@ Class objPlanets
 
     Private Function getSP(planet) As Integer
 
-        Dim expression As String = "[Spectral Type] = " & "'" & planet.sType() & "'"
+        Dim expression As String = "[Spectral Type] = " & "'" & planet.sType.inner() & "'"
         Dim selectRow As DataRow()
         selectRow = rockT.Select(expression)
         Dim mass As Single = planet.mass()
@@ -1132,7 +1132,7 @@ Class objPlanets
 
         End If
 
-        planet.orbitR = distance
+        planet.orbitR.inner = distance
         Return p
 
     End Function
@@ -1148,10 +1148,10 @@ Class objPlanets
 
             While ((((4 / 3) ^ 2) ^ (1 / 3) * mass) * 0.25) > Orock
 
-                planet.sClass = getSC()
-                planet.subT = getST()
-                planet.luminosity = getL(planet)
-                planet.sType = planet.sClass() & CShort(planet.subT()) & planet.luminosity()
+                planet.sClass.inner = getSC()
+                planet.subT.inner = getST()
+                planet.luminosity.inner = getL(planet)
+                planet.sType = planet.sClass.inner() & CShort(planet.subT.inner()) & planet.luminosity.inner()
                 expression = "[Spectral Type] = " & "'" & planet.sType() & "'"
                 selectRow = rockT.Select(expression)
                 mass = selectRow(0)(1)

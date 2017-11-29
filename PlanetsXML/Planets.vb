@@ -25,20 +25,20 @@ Partial Public Class Planet
 
         Dim otherPlanet As Planet = TryCast(obj, Planet)
         If otherPlanet IsNot Nothing Then
-            Return Me.name.CompareTo(otherPlanet.name)
+            Return Me.name.inner.CompareTo(otherPlanet.name)
         Else
             Throw New ArgumentException("Object is not a Planet")
         End If
     End Function
 
     <XmlElement("name")>
-    Public Property name() As String
+    Public Property name() As Canon(Of String)
 
     <XmlIgnore()>
     Public Property id() As String
     'Only if planet is a spacestation or asteroidfield
     <XmlElement("className")>
-    Public Property cName() As String
+    Public Property cName() As Canon(Of String)
 
     Public Function ShouldSerializecName() As Boolean
 
@@ -47,107 +47,107 @@ Partial Public Class Planet
     End Function
 
     <XmlElement("xcood")>
-    Public Property x() As Single?
+    Public Property x() As Canon(Of Single?)
 
     <XmlElement("ycood")>
-    Public Property y() As Single?
+    Public Property y() As Canon(Of Single?)
 
     <XmlElement("spectralClass")>
-    Public Property sClass() As String
+    Public Property sClass() As Canon(Of String)
 
     <XmlElement("subtype")>
-    Public Property subT() As Single?
+    Public Property subT() As Canon(Of Single?)
 
     <XmlElement("luminosity")>
-    Public Property luminosity() As String
+    Public Property luminosity() As Canon(Of String)
 
     <XmlElement("spectralType")>
-    Public Property sType() As String
+    Public Property sType() As Canon(Of String)
     'Habitability modifier of the star
     <XmlElement("habitability")>
-    Public Property habitability() As Short?
+    Public Property habitability() As Canon(Of Short?)
     'Star mass compared to Sol
     <XmlIgnore()>
-    Public Property mass() As Single
+    Public Property mass() As Single?
     'Star luminosity compared to Sol
     <XmlIgnore()>
-    Public Property lum() As Single
+    Public Property lum() As Single?
 
     <XmlElement("nadirCharge")>
-    Public Property nc() As Boolean?
+    Public Property nc() As Canon(Of Boolean?)
 
     Public Function ShouldSerializenc() As Boolean
 
-        Return Not (nc() Is Nothing OrElse nc() = False)
+        Return Not (nc() Is Nothing)
 
     End Function
 
     <XmlElement("zenithCharge")>
-    Public Property zc() As Boolean?
+    Public Property zc() As Canon(Of Boolean?)
 
     Public Function ShouldSerializezc() As Boolean
 
-        Return Not (zc() Is Nothing OrElse zc() = False)
+        Return Not (zc() Is Nothing)
 
     End Function
     'Star inner rock zone edge in AU
     <XmlIgnore()>
-    Public Property Irock() As Single
+    Public Property Irock() As Single?
     'Star outer rock zone edge in AU
     <XmlIgnore()>
-    Public Property Orock() As Single
+    Public Property Orock() As Single?
     'Star inner water zone edge in AU
     <XmlIgnore()>
-    Public Property Iwater() As Single
+    Public Property Iwater() As Single?
     'Star outer water zone edge in AU
     <XmlIgnore()>
-    Public Property Owater() As Single
+    Public Property Owater() As Single?
     'Orbital slot distances in AU from 1-15
     <XmlIgnore()>
-    Public Property slot1() As Single
+    Public Property slot1() As Single?
     <XmlIgnore()>
-    Public Property slot2() As Single
+    Public Property slot2() As Single?
     <XmlIgnore()>
-    Public Property slot3() As Single
+    Public Property slot3() As Single?
     <XmlIgnore()>
-    Public Property slot4() As Single
+    Public Property slot4() As Single?
     <XmlIgnore()>
-    Public Property slot5() As Single
+    Public Property slot5() As Single?
     <XmlIgnore()>
-    Public Property slot6() As Single
+    Public Property slot6() As Single?
     <XmlIgnore()>
-    Public Property slot7() As Single
+    Public Property slot7() As Single?
     <XmlIgnore()>
-    Public Property slot8() As Single
+    Public Property slot8() As Single?
     <XmlIgnore()>
-    Public Property slot9() As Single
+    Public Property slot9() As Single?
     <XmlIgnore()>
-    Public Property slot10() As Single
+    Public Property slot10() As Single?
     <XmlIgnore()>
-    Public Property slot11() As Single
+    Public Property slot11() As Single?
     <XmlIgnore()>
-    Public Property slot12() As Single
+    Public Property slot12() As Single?
     <XmlIgnore()>
-    Public Property slot13() As Single
+    Public Property slot13() As Single?
     <XmlIgnore()>
-    Public Property slot14() As Single
+    Public Property slot14() As Single?
     <XmlIgnore()>
-    Public Property slot15() As Single
+    Public Property slot15() As Single?
 
     <XmlElement("sysPos")>
-    Public Property sysPos() As Short?
+    Public Property sysPos() As Canon(Of Short?)
     'Distance in AU from star
     <XmlElement("orbitRadius")>
-    Public Property orbitR As Single?
+    Public Property orbitR As Canon(Of Single?)
     'Planet orbit's deviation from a perfect circle 0.0 - 1.0
     <XmlElement("orbitEccentricity")>
-    Public Property orbitE As Single?
+    Public Property orbitE As Canon(Of Single?)
     'Planet orbit's inclination to perpendicular of the system's angular momentum vector 0.0 - 90.0
     <XmlElement("orbitInclination")>
-    Public Property orbitI As Single?
+    Public Property orbitI As Canon(Of Single?)
     'Planet's axis tilt 0.0 - 90.0
     <XmlElement("tilt")>
-    Public Property tilt() As Short?
+    Public Property tilt() As Canon(Of Short?)
 
     Public Function ShouldSerializetilt() As Boolean
 
@@ -156,7 +156,7 @@ Partial Public Class Planet
     End Function
     'Planet mass compare to Earth
     <XmlElement("mass")>
-    Public Property Pmass() As Single?
+    Public Property Pmass() As Canon(Of Single?)
 
     Public Function ShouldSerializePmass() As Boolean
 
@@ -165,7 +165,7 @@ Partial Public Class Planet
     End Function
     'Planet radius compared to Earth
     <XmlElement("radius")>
-    Public Property radius() As Single?
+    Public Property radius() As Canon(Of Single?)
 
     Public Function ShouldSerializeradius() As Boolean
 
@@ -174,10 +174,10 @@ Partial Public Class Planet
     End Function
     'Planet volume in m3
     <XmlIgnore()>
-    Public Property volume() As Single
+    Public Property volume() As Single?
     'Planet density in kg/m3
     <XmlElement("density")>
-    Public Property density() As Single?
+    Public Property density() As Canon(Of Single?)
 
     Public Function ShouldSerializedensity() As Boolean
 
@@ -186,10 +186,10 @@ Partial Public Class Planet
     End Function
     'Planet escape velocity in m/s
     <XmlIgnore()>
-    Public Property escapeV() As Single
+    Public Property escapeV() As Single?
 
     <XmlElement("gravity")>
-    Public Property gravity() As Single?
+    Public Property gravity() As Canon(Of Single?)
 
     Public Function ShouldSerializegravity() As Boolean
 
@@ -198,7 +198,7 @@ Partial Public Class Planet
     End Function
 
     <XmlElement("dayLength")>
-    Public Property dayL() As Short?
+    Public Property dayL() As Canon(Of Short?)
 
     Public Function ShouldSerializedayL() As Boolean
 
@@ -207,7 +207,7 @@ Partial Public Class Planet
     End Function
     'Planet's atmosphere type vacuum(0) - very high(5)
     <XmlElement("pressure")>
-    Public Property pressure() As Short?
+    Public Property pressure() As Canon(Of Short?)
 
     Public Function ShouldSerializepressure() As Boolean
 
@@ -216,7 +216,7 @@ Partial Public Class Planet
     End Function
     'Planet's atmospheric pressure compared to Earth
     <XmlElement("pressureAtm")>
-    Public Property pAtm() As Single?
+    Public Property pAtm() As Canon(Of Single?)
 
     Public Function ShouldSerializepAtm() As Boolean
 
@@ -225,7 +225,7 @@ Partial Public Class Planet
     End Function
     'Text description of planet's atmosphere
     <XmlElement("atmosphere")>
-    Public Property atmosphere() As String
+    Public Property atmosphere() As Canon(Of String)
 
     Public Function ShouldSerializeatmosphere() As Boolean
 
@@ -234,7 +234,7 @@ Partial Public Class Planet
     End Function
     'Planet's mass of the atmosphere compared to Earth
     <XmlElement("atmMass")>
-    Public Property Amass() As Single?
+    Public Property Amass() As Canon(Of Single?)
 
     Public Function ShouldSerializeAmass() As Boolean
 
@@ -243,7 +243,7 @@ Partial Public Class Planet
     End Function
     'Amount of starlight reflected by the planet 0.0 - 1.0
     <XmlElement("albedo")>
-    Public Property albedo() As Single?
+    Public Property albedo() As Canon(Of Single?)
 
     Public Function ShouldSerializealbedo() As Boolean
 
@@ -252,7 +252,7 @@ Partial Public Class Planet
     End Function
     'Strength of planet's greenhouse effect
     <XmlElement("greenhouse")>
-    Public Property greenhouse() As Single?
+    Public Property greenhouse() As Canon(Of Single?)
 
     Public Function ShouldSerializegreenhouse() As Boolean
 
@@ -261,7 +261,7 @@ Partial Public Class Planet
     End Function
 
     <XmlElement("temperature")>
-    Public Property temperature() As Short?
+    Public Property temperature() As Canon(Of Short?)
 
     Public Function ShouldSerializetemperature() As Boolean
 
@@ -270,7 +270,7 @@ Partial Public Class Planet
     End Function
     'Planet's climate type (HQ specific) ARCTIC(0) - HELL(5)
     <XmlElement("climate")>
-    Public Property climate() As String
+    Public Property climate() As Canon(Of String)
 
     Public Function ShouldSerializeclimate() As Boolean
 
@@ -279,7 +279,7 @@ Partial Public Class Planet
     End Function
     'Planets volcanic activity 0-6
     <XmlElement("volcanism")>
-    Public Property volcanism() As Short?
+    Public Property volcanism() As Canon(Of Short?)
 
     Public Function ShouldSerializevolcanism() As Boolean
 
@@ -288,7 +288,7 @@ Partial Public Class Planet
     End Function
     'Planets tectonic activity 0-6
     <XmlElement("tectonics")>
-    Public Property tectonics() As Short?
+    Public Property tectonics() As Canon(Of Short?)
 
     Public Function ShouldSerializetectonics() As Boolean
 
@@ -297,7 +297,7 @@ Partial Public Class Planet
     End Function
 
     <XmlElement("percentWater")>
-    Public Property percentWater() As Short?
+    Public Property percentWater() As Canon(Of Short?)
 
     Public Function ShouldSerializepercentWater() As Boolean
 
@@ -306,7 +306,7 @@ Partial Public Class Planet
     End Function
     'Highest life form on planet NONE(0) - MAMMAL(8)
     <XmlElement("lifeForm")>
-    Public Property lifeForm() As String
+    Public Property lifeForm() As Canon(Of String)
 
     Public Function ShouldSerializelifeForm() As Boolean
 
@@ -315,7 +315,7 @@ Partial Public Class Planet
     End Function
     'Number of satellites
     <XmlElement("satellites")>
-    Public Property satellites() As Short?
+    Public Property satellites() As Canon(Of Short?)
 
     Public Function ShouldSerializesatellites() As Boolean
 
@@ -324,7 +324,7 @@ Partial Public Class Planet
     End Function
     'Array of satellite(s)
     <XmlElement("satellite")>
-    Public Property satelliteArray() As String()
+    Public Property satelliteArray() As Canon(Of String())
 
     Public Function ShouldSerializesatellite() As Boolean
 
@@ -333,10 +333,10 @@ Partial Public Class Planet
     End Function
     'If planet has a ring system
     <XmlIgnore()>
-    Public Property rings() As Boolean
+    Public Property rings() As Boolean?
 
     <XmlElement("landMass")>
-    Public Property landMassArray() As String()
+    Public Property landMassArray() As Canon(Of String())
 
     Public Function ShouldSerializelandMass() As Boolean
 
@@ -345,10 +345,10 @@ Partial Public Class Planet
     End Function
     'Planets number of human occupants
     <XmlIgnore()>
-    Public Property population() As Long
+    Public Property population() As Long?
     'Planet's population rating "no population"(-1) - "trillions"(12) 
     <XmlElement("pop")>
-    Public Property pop() As Short?
+    Public Property pop() As Canon(Of Short?)
 
     Public Function ShouldSerializepop() As Boolean
 
@@ -357,7 +357,7 @@ Partial Public Class Planet
     End Function
     'Text description of planet's government
     <XmlElement("government")>
-    Public Property government() As String
+    Public Property government() As Canon(Of String)
 
     Public Function ShouldSerializegovernment() As Boolean
 
@@ -366,7 +366,7 @@ Partial Public Class Planet
     End Function
     'Planet government's control over the population anarchy(-1) - enslaved(7)
     <XmlElement("controlRating")>
-    Public Property cRating() As Short?
+    Public Property cRating() As Canon(Of Short?)
 
     Public Function ShouldSerializecRating() As Boolean
 
@@ -375,18 +375,18 @@ Partial Public Class Planet
     End Function
     'Planet's SI scores
     <XmlIgnore()>
-    Public Property tech() As Short
+    Public Property tech() As Short?
     <XmlIgnore()>
-    Public Property development() As Short
+    Public Property development() As Short?
     <XmlIgnore()>
-    Public Property material() As Short
+    Public Property material() As Short?
     <XmlIgnore()>
-    Public Property output() As Short
+    Public Property output() As Short?
     <XmlIgnore()>
-    Public Property agricultural() As Short
+    Public Property agricultural() As Short?
 
     <XmlElement("socioIndustrial")>
-    Public Property socioIndustrial() As String
+    Public Property socioIndustrial() As Canon(Of String)
 
     Public Function ShouldSerializesocioIndustrial() As Boolean
 
@@ -395,7 +395,7 @@ Partial Public Class Planet
     End Function
 
     <XmlElement("hpg")>
-    Public Property hpg() As String
+    Public Property hpg() As Canon(Of String)
 
     Public Function ShouldSerializehpg() As Boolean
 
@@ -404,13 +404,13 @@ Partial Public Class Planet
     End Function
 
     <XmlElement("faction")>
-    Public Property faction() As String
+    Public Property faction() As Canon(Of String)
 
     <XmlElement("icon")>
-    Public Property icon() As String
+    Public Property icon() As Canon(Of String)
     'If the planet already has a description
     <XmlIgnore()>
-    Public Property lore() As Boolean
+    Public Property lore() As Boolean?
     'To store all non-canon notes for the description
     <XmlIgnore()>
     Public Property nonCanon() As String
@@ -426,6 +426,15 @@ Partial Public Class Planet
 
 End Class
 
+Partial Public Class Canon(Of T)
+
+    <XmlAttribute("isCanon")>
+    Public Property isCanon() As Boolean
+
+    Public Property inner() As T
+
+End Class
+
 <Serializable,
  ComponentModel.DesignerCategory("event"),
  XmlType(AnonymousType:=True),
@@ -436,6 +445,6 @@ Partial Public Class planetEvent
     Public Property [date]() As Date
 
     <XmlElement("faction")>
-    Public Property faction() As String
+    Public Property faction() As Canon(Of String)
 
 End Class
