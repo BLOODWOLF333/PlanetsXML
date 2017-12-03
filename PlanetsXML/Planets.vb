@@ -426,12 +426,18 @@ Partial Public Class Planet
 
 End Class
 
+<System.SerializableAttribute(),
+ System.ComponentModel.DesignerCategoryAttribute("code"),
+ System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)>
 Partial Public Class Canon(Of T)
 
-    <XmlAttribute("isCanon")>
-    Public Property isCanon() As Boolean
+    Private a As Boolean
+    Private i As T
 
-    Public Property inner() As T
+    <System.Xml.Serialization.XmlAttributeAttribute()>
+    Public Property isCanon()
+    <System.Xml.Serialization.XmlTextAttribute()>
+    Public Property inner()
 
 End Class
 
